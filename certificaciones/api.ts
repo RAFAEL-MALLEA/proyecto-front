@@ -5,10 +5,7 @@ export async function obtenerCertificaciones() {
 
   if (!response.ok) {
     const detalle = await response.text();
-
-    throw new Error(
-      `Error ${response.status} al obtener certificaciones: ${detalle}`,
-    );
+    throw new Error(`Error ${response.status}: ${detalle}`);
   }
 
   return response.json();
