@@ -1,57 +1,56 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 import { obtenerServicios } from "@/services/api";
-import { Servicio } from "@/types/Servicio";
 import { obtenerCertificaciones } from "@/certificaciones/api";
 
+import type { Servicio } from "@/types/Servicio";
+import type { Certificacion } from "@/types/Certificacion";
+
 export default function Home() {
+  const [servicios, setServicios] = useState<Servicio[]>([]);
+  const [certificaciones, setCertificaciones] =
+    useState<Certificacion[]>([]);
 
-    const [servicios, setServicios] = useState<Servicio[]>([]);
-     const [certificaciones, setCertificaciones] = useState<Certificacion[]>([]);
+  useEffect(() => {
+    obtenerServicios()
+      .then(setServicios)
+      .catch((error) => {
+        console.error("Error cargando servicios:", error);
+      });
 
-    useEffect(() => {
+    obtenerCertificaciones()
+      .then(setCertificaciones)
+      .catch((error) => {
+        console.error("Error cargando certificaciones:", error);
+      });
+  }, []);
 
-        obtenerServicios()
-            .then((data) => setServicios(data))
-            .catch(console.error);
-
-         obtenerCertificaciones()
-            .then((data) => setCertificaciones(data))
-             .catch(console.error);
-
-    });
-
-return (
+  return (
     <>
-        <div>
+      <section>
+        <h1>Servicios</h1>
 
-            <h1>Servicios</h1>
+        {servicios.map((servicio) => (
+          <div key={servicio.id}>
+            <h3>{servicio.Nombre_servicio}</h3>
+            <p>${servicio.valor}</p>
+          </div>
+        ))}
+      </section>
 
-            {servicios.map(servicio => (
+      <section>
+        <h1>Certificaciones</h1>
 
-                <div key={servicio.id}>
-                    <h3>{servicio.Nombre_servicio}</h3>
-                    <p>${servicio.valor}</p>
-                </div>
-
-            ))}
-
-        </div>
-
-        <div>
-
-            <h1>Certificaciones</h1>
-
-            {certificaciones.map(certificacion => (
-
-                <div key={certificacion.id}>
-                    <h3>{certificacion.nombre_certificacion}</h3>
-                </div>
-
-            ))}
-
-        </div>
+        {certificaciones.map((certificacion) => (
+          <div key={certificacion.id}>
+            <h3>{certificacion.nombre_certificacion}</h3>
+            <p>{certificacion.institucion}</p>
+            <p>{certificacion.estado}</p>
+          </div>
+        ))}
+      </section>
     </>
-);
+  );
 }
