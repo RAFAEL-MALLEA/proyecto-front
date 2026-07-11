@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 
-import { obtenerServicios } from "@/services/api";
-import { obtenerCertificaciones } from "@/certificaciones/api";
+import { obtenerServicios } from "@/services/servicios";
+import { obtenerCertificaciones } from "@/services/certificaciones";
 
 import type { Servicio } from "@/types/Servicio";
 import type { Certificacion } from "@/types/Certificacion";
