@@ -19,9 +19,19 @@ useEffect(() => {
       console.log("Certificaciones recibidas:", data);
       setCertificaciones(data);
     })
-    .catch((error) => {
-      console.error("Error certificaciones:", error);
-    });
+      .catch((errorDesconocido) => {
+        console.error(
+          "Error certificaciones:",
+          errorDesconocido
+        );
+
+        const mensaje =
+          errorDesconocido instanceof Error
+            ? errorDesconocido.message
+            : "No fue posible cargar las certificaciones.";
+
+        setError(mensaje);
+      });
 }, []);
 
 
