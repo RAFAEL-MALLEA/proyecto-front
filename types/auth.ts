@@ -7,3 +7,10 @@ export interface TokenResponse {
   access_token: string;
   token_type: string;
 }
+
+export interface UsuarioActual {
+  id: number;
+  nombre: string;
+  email: string;
+  activo: boolean;
+}
