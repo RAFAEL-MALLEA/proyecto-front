@@ -14,8 +14,3 @@ export interface UsuarioActual {
   email: string;
   activo: boolean;
 }
-
-export interface ObtenerUsuarioActual(
-  token: string
-  
-)

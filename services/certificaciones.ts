@@ -1,16 +1,17 @@
+import { API_BASE_URL } from "@/config/api";
 import type {
   Certificacion,
   CertificacionCreate,
   CertificacionUpdate,
 } from "@/types/Certificacion";
 
-const API_URL = "http://127.0.0.1:8000";
+
 
 export async function obtenerCertificaciones(): Promise<
   Certificacion[]
 > {
   const response = await fetch(
-    `${API_URL}/certificaciones/`
+    `${API_BASE_URL}/certificaciones/`
   );
 
   if (!response.ok) {
@@ -35,7 +36,7 @@ export async function crearCertificacion(
   }
 
   const response = await fetch(
-    `${API_URL}/certificaciones/`,
+    `${API_BASE_URL}/certificaciones/`,
     {
       method: "POST",
       headers: {
@@ -80,7 +81,7 @@ export async function actualizarCertificacion(
   }
 
   const response = await fetch(
-    `${API_URL}/certificaciones/${certificacionId}`,
+    `${API_BASE_URL}/certificaciones/${certificacionId}`,
     {
       method: "PATCH",
       headers: {
@@ -125,7 +126,7 @@ export async function eliminarCertificacion(
   }
 
   const response = await fetch(
-    `${API_URL}/certificaciones/?certificacion_id=${certificacionId}`,
+    `${API_BASE_URL}/certificaciones/?certificacion_id=${certificacionId}`,
     {
       method: "DELETE",
       headers: {

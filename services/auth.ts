@@ -1,34 +1,32 @@
+import { API_BASE_URL } from "@/config/api";
+
 import type {
   LoginRequest,
   TokenResponse,
   UsuarioActual,
 } from "@/types/auth";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
 export async function iniciarSesion(
-  credenciales: LoginRequest
+  datos: LoginRequest
 ): Promise<TokenResponse> {
-  if (!API_URL) {
-    throw new Error(
-      "La variable NEXT_PUBLIC_API_URL no está configurada."
-    );
-  }
-
-  const response = await fetch(`${API_URL}/auth/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify(credenciales),
-  });
+  const response = await fetch(
+    `${API_BASE_URL}/auth/login`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(datos),
+    }
+  );
 
   const data = await response.json();
 
   if (!response.ok) {
     throw new Error(
-      data.detail ?? "No fue posible iniciar sesión."
+      data.detail ??
+        `No fue posible iniciar sesión. Error ${response.status}`
     );
   }
 
@@ -38,26 +36,30 @@ export async function iniciarSesion(
 export async function obtenerUsuarioActual(
   token: string
 ): Promise<UsuarioActual> {
-  if (!API_URL) {
+  if (!token) {
     throw new Error(
-      "La variable NEXT_PUBLIC_API_URL no está configurada."
+      "No se encontró el token de autenticación."
     );
   }
 
-  const response = await fetch(`${API_URL}/auth/me`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    cache: "no-store",
-  });
+  const response = await fetch(
+    `${API_BASE_URL}/auth/me`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      cache: "no-store",
+    }
+  );
 
   const data = await response.json();
 
   if (!response.ok) {
     throw new Error(
-      data.detail ?? "No fue posible validar la sesión."
+      data.detail ??
+        `No fue posible validar la sesión. Error ${response.status}`
     );
   }
 

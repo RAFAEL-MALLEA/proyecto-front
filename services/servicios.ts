@@ -1,13 +1,15 @@
+import { API_BASE_URL } from "@/config/api";
+
 import type {
   Servicio,
   ServicioCreate,
   ServicioUpdate,
 } from "@/types/Servicio";
 
-const API_URL = "http://127.0.0.1:8000";
+
 
 export async function obtenerServicios(): Promise<Servicio[]> {
-  const response = await fetch(`${API_URL}/servicios/`);
+  const response = await fetch(`${API_BASE_URL}/servicios/`);
 
   if (!response.ok) {
     const detalle = await response.text();
@@ -30,7 +32,7 @@ export async function crearServicio(
     );
   }
 
-  const response = await fetch(`${API_URL}/servicios/`, {
+  const response = await fetch(`${API_BASE_URL}/servicios/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -70,7 +72,7 @@ export async function actualizarServicio(
   }
 
   const response = await fetch(
-    `${API_URL}/servicios/?servicio_id=${servicioId}`,
+    `${API_BASE_URL}/servicios/?servicio_id=${servicioId}`,
     {
       method: "PUT",
       headers: {
@@ -111,7 +113,7 @@ export async function eliminarServicio(
   }
 
   const response = await fetch(
-    `${API_URL}/servicios/?servicio_id=${servicioId}`,
+    `${API_BASE_URL}/servicios/?servicio_id=${servicioId}`,
     {
       method: "DELETE",
       headers: {
