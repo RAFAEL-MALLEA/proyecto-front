@@ -4,20 +4,22 @@ import { useEffect, useState } from "react";
 
 import CrearServicioForm from "@/components/CrearServicioForm";
 import EditarServicioForm from "@/components/EditarServicioForm";
-import { obtenerServicios } from "@/services/servicios";
+import {
+  eliminarServicio,
+  obtenerServicios,
+} from "@/services/servicios";
 import type { Servicio } from "@/types/Servicio";
 
 export default function ServiciosAdminPage() {
-  const [servicios, setServicios] = useState<Servicio[]>(
-    []
-  );
+  const [servicios, setServicios] = useState<Servicio[]>([]);
 
   const [servicioEnEdicion, setServicioEnEdicion] =
     useState<Servicio | null>(null);
 
-  const [error, setError] = useState<string | null>(
-    null
-  );
+  const [servicioEliminandoId, setServicioEliminandoId] =
+    useState<number | null>(null);
+
+  const [error, setError] = useState<string | null>(null);
 
   function agregarServicioALista(
     servicioCreado: Servicio
@@ -40,6 +42,57 @@ export default function ServiciosAdminPage() {
     );
 
     setServicioEnEdicion(null);
+  }
+
+  async function manejarEliminarServicio(
+    servicio: Servicio
+  ) {
+    const confirmacion = window.confirm(
+      `¿Seguro que deseas eliminar "${servicio.Nombre_servicio}"?`
+    );
+
+    if (!confirmacion) {
+      return;
+    }
+
+    const token = sessionStorage.getItem("access_token");
+
+    if (!token) {
+      setError(
+        "No existe una sesión válida. Vuelve a iniciar sesión."
+      );
+      return;
+    }
+
+    try {
+      setError(null);
+      setServicioEliminandoId(servicio.id);
+
+      const servicioEliminado = await eliminarServicio(
+        servicio.id,
+        token
+      );
+
+      setServicios((serviciosActuales) =>
+        serviciosActuales.filter(
+          (servicioActual) =>
+            servicioActual.id !== servicioEliminado.id
+        )
+      );
+
+      if (servicioEnEdicion?.id === servicioEliminado.id) {
+        setServicioEnEdicion(null);
+      }
+    } catch (errorDesconocido) {
+      const mensaje =
+        errorDesconocido instanceof Error
+          ? errorDesconocido.message
+          : "Ocurrió un error al eliminar el servicio.";
+
+      setError(mensaje);
+    } finally {
+      setServicioEliminandoId(null);
+    }
   }
 
   useEffect(() => {
@@ -96,7 +149,6 @@ export default function ServiciosAdminPage() {
                 {servicioEnEdicion?.id ===
                 servicio.id ? (
                   <EditarServicioForm
-                    key={servicio.id}
                     servicio={servicio}
                     onServicioActualizado={
                       reemplazarServicioEnLista
@@ -120,15 +172,35 @@ export default function ServiciosAdminPage() {
                       </p>
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setServicioEnEdicion(servicio)
-                      }
-                      className="rounded-lg border border-blue-600 px-4 py-2 text-sm font-semibold text-blue-600 transition hover:bg-blue-50"
-                    >
-                      Editar
-                    </button>
+                    <div className="flex flex-wrap gap-3">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setServicioEnEdicion(servicio)
+                        }
+                        disabled={
+                          servicioEliminandoId === servicio.id
+                        }
+                        className="rounded-lg border border-blue-600 px-4 py-2 text-sm font-semibold text-blue-600 transition hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        Editar
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          manejarEliminarServicio(servicio)
+                        }
+                        disabled={
+                          servicioEliminandoId !== null
+                        }
+                        className="rounded-lg border border-red-600 px-4 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        {servicioEliminandoId === servicio.id
+                          ? "Eliminando..."
+                          : "Eliminar"}
+                      </button>
+                    </div>
                   </div>
                 )}
               </article>

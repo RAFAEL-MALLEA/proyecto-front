@@ -93,3 +93,42 @@ export async function actualizarServicio(
 
   return data as Servicio;
 }
+
+export async function eliminarServicio(
+  servicioId: number,
+  token: string
+): Promise<Servicio> {
+  if (!token) {
+    throw new Error(
+      "No se encontró el token de autenticación."
+    );
+  }
+
+  if (!Number.isInteger(servicioId) || servicioId <= 0) {
+    throw new Error(
+      "El ID del servicio no es válido."
+    );
+  }
+
+  const response = await fetch(
+    `${API_URL}/servicios/?servicio_id=${servicioId}`,
+    {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.detail ??
+        `No fue posible eliminar el servicio. Error ${response.status}`
+    );
+  }
+
+  return data as Servicio;
+}
