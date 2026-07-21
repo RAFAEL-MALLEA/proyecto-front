@@ -64,6 +64,13 @@ export default function Hero() {
             >
               Ver certificaciones
             </a>
+            <a
+            href="/documentos/rafael-mallea-cv.pdf"
+            download="rafael-mallea-cv.pdf"
+            className="rounded-lg border border-slate-600 px-6 py-3 font-semibold text-slate-200 transition hover:border-blue-400 hover:bg-blue-500/10 hover:text-white"
+            >
+            Descargar CV
+            </a>
           </div>
         </div>
 
