@@ -16,6 +16,10 @@ const enlacesNavegacion = [
     nombre: "Certificaciones",
     href: "#certificaciones",
   },
+  {
+    nombre: "Contacto",
+    href: "#contacto",
+  },
 ];
 
 export default function HeaderPublico() {
