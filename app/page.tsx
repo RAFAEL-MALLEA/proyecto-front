@@ -3,6 +3,7 @@ import ContactoSection from "@/components/public/ContactoSection";
 import FooterPublico from "@/components/public/FooterPublico";
 import HeaderPublico from "@/components/public/HeaderPublico";
 import Hero from "@/components/public/Hero";
+import ReproductorMusica from "@/components/public/ReproductorMusica";
 import ServiciosSection from "@/components/public/ServiciosSection";
 
 export default function HomePage() {
@@ -18,6 +19,8 @@ export default function HomePage() {
       </main>
 
       <FooterPublico />
+
+      <ReproductorMusica />
     </>
   );
 }
