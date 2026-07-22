@@ -8,15 +8,13 @@ export default function MensajeError({
   return (
     <div
       role="alert"
-      className="rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700"
+      className="flex flex-col rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700"
     >
       <p className="font-semibold">
         No fue posible cargar la información
       </p>
 
-      <p className="mt-1">
-        {mensaje}
-      </p>
+      <p className="mt-1">{mensaje}</p>
     </div>
   );
 }

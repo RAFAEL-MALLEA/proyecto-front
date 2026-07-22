@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
+import { useState } from "react";
 
 const enlacesNavegacion = [
   {
@@ -23,8 +23,7 @@ const enlacesNavegacion = [
 ];
 
 export default function HeaderPublico() {
-  const [menuAbierto, setMenuAbierto] =
-    useState(false);
+  const [menuAbierto, setMenuAbierto] = useState(false);
 
   function cerrarMenu() {
     setMenuAbierto(false);
@@ -32,16 +31,14 @@ export default function HeaderPublico() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-slate-800 bg-slate-950/90 text-white backdrop-blur">
-      <div className="mx-auto flex h-18 max-w-6xl items-center justify-between px-6">
+      <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-6">
         <a
           href="#inicio"
           onClick={cerrarMenu}
           className="text-xl font-bold tracking-tight"
         >
           Rafael
-          <span className="text-blue-400">
-            Mallea
-          </span>
+          <span className="text-blue-400">Mallea</span>
         </a>
 
         <nav
@@ -68,17 +65,11 @@ export default function HeaderPublico() {
 
         <button
           type="button"
-          aria-label={
-            menuAbierto
-              ? "Cerrar menú"
-              : "Abrir menú"
-          }
+          aria-label={menuAbierto ? "Cerrar menú" : "Abrir menú"}
           aria-expanded={menuAbierto}
           aria-controls="menu-movil"
           onClick={() =>
-            setMenuAbierto(
-              (estadoActual) => !estadoActual
-            )
+            setMenuAbierto((estadoActual) => !estadoActual)
           }
           className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-700 text-slate-200 transition hover:border-blue-500 hover:text-blue-400 md:hidden"
         >
@@ -119,7 +110,7 @@ export default function HeaderPublico() {
           aria-label="Navegación móvil"
           className="border-t border-slate-800 bg-slate-950 px-6 py-5 md:hidden"
         >
-          <div className="mx-auto flex max-w-6xl flex-col gap-2">
+          <div className="mx-auto flex w-full max-w-6xl flex-col gap-2">
             {enlacesNavegacion.map((enlace) => (
               <a
                 key={enlace.href}

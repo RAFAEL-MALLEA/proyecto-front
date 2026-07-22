@@ -6,13 +6,13 @@ export default function Hero() {
     "Python",
     "FastAPI",
     "MySQL",
-    "PostgreSQL"
+    "PostgreSQL",
   ];
 
   return (
     <section
       id="inicio"
-      className="relative flex min-h-screen items-center overflow-hidden bg-slate-950 px-6 py-20 text-white"
+      className="relative flex min-h-screen scroll-mt-20 items-center overflow-hidden bg-slate-950 px-6 py-28 text-white"
     >
       <div
         aria-hidden="true"
@@ -24,18 +24,16 @@ export default function Hero() {
         className="absolute bottom-0 right-0 h-80 w-80 rounded-full bg-cyan-500/10 blur-3xl"
       />
 
-      <div className="relative mx-auto grid w-full max-w-6xl items-center gap-14 lg:grid-cols-2">
-        <div>
-
-
-          <p className="mt-8 text-sm font-semibold uppercase tracking-[0.25em] text-blue-400">
+      <div className="relative mx-auto flex w-full max-w-6xl flex-col items-center gap-14 lg:flex-row lg:justify-between">
+        <div className="w-full lg:w-[55%]">
+          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-blue-400">
             Ingeniero en Informática
           </p>
 
           <h1 className="mt-4 text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
             Hola, soy{" "}
             <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-              Rafael Mallea Ramirez
+              Rafael Mallea Ramírez
             </span>
           </h1>
 
@@ -50,32 +48,33 @@ export default function Hero() {
             reales.
           </p>
 
-          <div className="mt-9 flex flex-wrap gap-4">
+          <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
             <a
               href="#servicios"
-              className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-950"
+              className="w-full rounded-lg bg-blue-600 px-6 py-3 text-center font-semibold text-white transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-950 sm:w-auto"
             >
               Ver mis servicios
             </a>
 
             <a
               href="#certificaciones"
-              className="rounded-lg border border-slate-600 px-6 py-3 font-semibold text-slate-200 transition hover:border-blue-400 hover:bg-blue-500/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-950"
+              className="w-full rounded-lg border border-slate-600 px-6 py-3 text-center font-semibold text-slate-200 transition hover:border-blue-400 hover:bg-blue-500/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-950 sm:w-auto"
             >
               Ver certificaciones
             </a>
+
             <a
-            href="/documentos/rafael-mallea-cv.pdf"
-            download="rafael-mallea-cv.pdf"
-            className="rounded-lg border border-slate-600 px-6 py-3 font-semibold text-slate-200 transition hover:border-blue-400 hover:bg-blue-500/10 hover:text-white"
+              href="/documentos/rafael-mallea-cv.pdf"
+              download="rafael-mallea-cv.pdf"
+              className="w-full rounded-lg border border-slate-600 px-6 py-3 text-center font-semibold text-slate-200 transition hover:border-blue-400 hover:bg-blue-500/10 hover:text-white sm:w-auto"
             >
-            Descargar CV
+              Descargar CV
             </a>
           </div>
         </div>
 
-        <div className="lg:justify-self-end">
-          <div className="relative rounded-2xl border border-slate-700 bg-slate-900/80 p-7 shadow-2xl shadow-blue-950/40 backdrop-blur">
+        <div className="flex w-full justify-center lg:w-[40%] lg:justify-end">
+          <div className="relative w-full max-w-lg rounded-2xl border border-slate-700 bg-slate-900/80 p-7 shadow-2xl shadow-blue-950/40 backdrop-blur">
             <div className="flex items-center gap-2">
               <span className="h-3 w-3 rounded-full bg-red-400" />
               <span className="h-3 w-3 rounded-full bg-yellow-400" />

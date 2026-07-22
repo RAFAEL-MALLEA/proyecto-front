@@ -23,27 +23,24 @@ export default function FooterPublico() {
   return (
     <footer className="border-t border-slate-800 bg-slate-950 px-6 py-12 text-white">
       <div className="mx-auto max-w-6xl">
-        <div className="grid gap-10 md:grid-cols-3">
-          <div>
+        <div className="flex flex-col gap-10 md:flex-row md:flex-wrap md:justify-between">
+          <div className="w-full md:flex-1">
             <a
               href="#inicio"
               className="text-xl font-bold tracking-tight"
             >
               Rafael
-              <span className="text-blue-400">
-                Mallea
-              </span>
+              <span className="text-blue-400">Mallea</span>
             </a>
 
             <p className="mt-4 max-w-sm leading-7 text-slate-400">
-              Ingeniero en Informática y desarrollador
-              Full Stack Junior, enfocado en crear
-              soluciones web funcionales, modernas y
+              Ingeniero en Informática y desarrollador Full Stack Junior,
+              enfocado en crear soluciones web funcionales, modernas y
               adaptadas a necesidades reales.
             </p>
           </div>
 
-          <div>
+          <div className="w-full md:min-w-40 md:flex-1">
             <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-200">
               Navegación
             </h2>
@@ -64,15 +61,14 @@ export default function FooterPublico() {
             </nav>
           </div>
 
-          <div>
+          <div className="w-full md:flex-1">
             <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-200">
               Perfil profesional
             </h2>
 
             <p className="mt-5 text-sm leading-7 text-slate-400">
-              Puedes conocer más sobre mi experiencia,
-              formación y trayectoria profesional en
-              LinkedIn.
+              Puedes conocer más sobre mi experiencia, formación y
+              trayectoria profesional en LinkedIn.
             </p>
 
             <a
@@ -102,13 +98,12 @@ export default function FooterPublico() {
 
         <div className="mt-12 flex flex-col gap-4 border-t border-slate-800 pt-7 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {anioActual} Rafael Alejandro Mallea
-            Ramírez. Todos los derechos reservados.
+            © {anioActual} Rafael Alejandro Mallea Ramírez. Todos los
+            derechos reservados.
           </p>
 
           <p>
-            Desarrollado con Next.js, TypeScript y
-            Tailwind CSS.
+            Desarrollado con Next.js, TypeScript y Tailwind CSS.
           </p>
         </div>
       </div>

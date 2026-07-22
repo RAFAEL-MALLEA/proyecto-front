@@ -115,7 +115,7 @@ export default function EditarCertificacionForm({
       onSubmit={manejarEnvio}
       className="space-y-5"
     >
-      <div className="grid gap-5 md:grid-cols-2">
+      <div className="flex gap-5">
         <div>
           <label
             htmlFor={`nombre-certificacion-${certificacion.id}`}

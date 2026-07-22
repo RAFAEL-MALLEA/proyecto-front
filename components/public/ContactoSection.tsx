@@ -33,11 +33,7 @@ const opcionesContacto = [
   },
 ];
 
-function IconoContacto({
-  tipo,
-}: {
-  tipo: string;
-}) {
+function IconoContacto({ tipo }: { tipo: string }) {
   if (tipo === "correo") {
     return (
       <svg
@@ -50,14 +46,7 @@ function IconoContacto({
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <rect
-          x="3"
-          y="5"
-          width="18"
-          height="14"
-          rx="2"
-        />
-
+        <rect x="3" y="5" width="18" height="14" rx="2" />
         <path d="m3 7 9 6 9-6" />
       </svg>
     );
@@ -88,7 +77,6 @@ function IconoContacto({
       strokeLinejoin="round"
     >
       <path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.4 9.4 0 0 1-4-.9L3 21l1.9-4.8A8.6 8.6 0 1 1 21 11.5Z" />
-
       <path d="M8.5 8.5c.5 3 2 4.5 5 5" />
     </svg>
   );
@@ -98,10 +86,10 @@ export default function ContactoSection() {
   return (
     <section
       id="contacto"
-      className="bg-slate-950 px-6 py-24 text-white"
+      className="scroll-mt-20 bg-slate-950 px-6 py-24 text-white"
     >
       <div className="mx-auto max-w-6xl">
-        <div className="mx-auto max-w-3xl text-center">
+        <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.25em] text-blue-400">
             Contacto
           </p>
@@ -111,18 +99,16 @@ export default function ContactoSection() {
           </h2>
 
           <p className="mt-5 leading-8 text-slate-400">
-            Estoy disponible para oportunidades
-            laborales, proyectos de desarrollo web,
-            soporte tecnológico y nuevas
-            colaboraciones.
+            Estoy disponible para oportunidades laborales, proyectos de
+            desarrollo web, soporte tecnológico y nuevas colaboraciones.
           </p>
         </div>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-3">
+        <div className="mt-14 flex flex-wrap gap-6">
           {opcionesContacto.map((opcion) => (
             <article
               key={opcion.titulo}
-              className="flex flex-col rounded-2xl border border-slate-800 bg-slate-900 p-7 transition duration-300 hover:-translate-y-1 hover:border-blue-500 hover:shadow-xl hover:shadow-blue-950/30"
+              className="flex w-full min-w-0 flex-col rounded-2xl border border-slate-800 bg-slate-900 p-7 transition duration-300 hover:-translate-y-1 hover:border-blue-500 hover:shadow-xl hover:shadow-blue-950/30 md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]"
             >
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/10 text-blue-400">
                 <IconoContacto tipo={opcion.tipo} />
@@ -148,12 +134,11 @@ export default function ContactoSection() {
                     ? undefined
                     : "noreferrer"
                 }
-                className="mt-7 inline-flex items-center gap-2 font-semibold text-blue-400 transition hover:text-blue-300"
+                className="mt-7 inline-flex break-all font-semibold text-blue-400 transition hover:text-blue-300"
               >
-                {opcion.textoEnlace}
-
-                <span aria-hidden="true">
-                  →
+                <span className="flex items-center gap-2">
+                  {opcion.textoEnlace}
+                  <span aria-hidden="true">→</span>
                 </span>
               </a>
             </article>

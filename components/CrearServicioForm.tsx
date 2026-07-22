@@ -89,7 +89,7 @@ export default function CrearServicioForm({
         Ingresa la información del nuevo servicio.
       </p>
 
-      <div className="mt-6 grid gap-5 md:grid-cols-2">
+      <div className="mt-6 flex gap-5">
         <div>
           <label
             htmlFor="nombre-servicio"

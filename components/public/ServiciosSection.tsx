@@ -7,25 +7,16 @@ import MensajeError from "@/components/public/MensajeError";
 import { obtenerServicios } from "@/services/servicios";
 import type { Servicio } from "@/types/Servicio";
 
-const formateadorPrecio = new Intl.NumberFormat(
-  "es-CL",
-  {
-    style: "currency",
-    currency: "CLP",
-    maximumFractionDigits: 0,
-  }
-);
+const formateadorPrecio = new Intl.NumberFormat("es-CL", {
+  style: "currency",
+  currency: "CLP",
+  maximumFractionDigits: 0,
+});
 
 export default function ServiciosSection() {
-  const [servicios, setServicios] = useState<
-    Servicio[]
-  >([]);
-
+  const [servicios, setServicios] = useState<Servicio[]>([]);
   const [cargando, setCargando] = useState(true);
-
-  const [error, setError] = useState<
-    string | null
-  >(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let componenteActivo = true;
@@ -35,8 +26,7 @@ export default function ServiciosSection() {
         setCargando(true);
         setError(null);
 
-        const serviciosRecibidos =
-          await obtenerServicios();
+        const serviciosRecibidos = await obtenerServicios();
 
         if (componenteActivo) {
           setServicios(serviciosRecibidos);
@@ -69,10 +59,10 @@ export default function ServiciosSection() {
   return (
     <section
       id="servicios"
-      className="bg-slate-50 px-6 py-24"
+      className="scroll-mt-20 bg-slate-50 px-6 py-24"
     >
       <div className="mx-auto max-w-6xl">
-        <div className="mx-auto max-w-3xl text-center">
+        <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.25em] text-blue-600">
             Servicios
           </p>
@@ -82,10 +72,9 @@ export default function ServiciosSection() {
           </h2>
 
           <p className="mt-5 leading-8 text-slate-600">
-            Servicios enfocados en desarrollo web,
-            soporte tecnológico y creación de
-            soluciones adaptadas a las necesidades
-            de cada proyecto.
+            Servicios enfocados en desarrollo web, soporte tecnológico y
+            creación de soluciones adaptadas a las necesidades de cada
+            proyecto.
           </p>
         </div>
 
@@ -98,55 +87,47 @@ export default function ServiciosSection() {
             <MensajeError mensaje={error} />
           )}
 
-          {!cargando &&
-            !error &&
-            servicios.length === 0 && (
-              <div className="rounded-xl border border-slate-200 bg-white px-6 py-10 text-center">
-                <p className="text-slate-500">
-                  Actualmente no existen servicios
-                  publicados.
-                </p>
-              </div>
-            )}
+          {!cargando && !error && servicios.length === 0 && (
+            <div className="rounded-xl border border-slate-200 bg-white px-6 py-10 text-center">
+              <p className="text-slate-500">
+                Actualmente no existen servicios publicados.
+              </p>
+            </div>
+          )}
 
-          {!cargando &&
-            !error &&
-            servicios.length > 0 && (
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {servicios.map((servicio) => (
-                  <article
-                    key={servicio.id}
-                    className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-7 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-xl"
-                  >
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-xl font-bold text-blue-600">
-                      {"</>"}
-                    </div>
+          {!cargando && !error && servicios.length > 0 && (
+            <div className="flex flex-wrap gap-6">
+              {servicios.map((servicio) => (
+                <article
+                  key={servicio.id}
+                  className="group flex w-full flex-col rounded-2xl border border-slate-200 bg-white p-7 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-xl md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]"
+                >
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-xl font-bold text-blue-600">
+                    {"</>"}
+                  </div>
 
-                    <h3 className="mt-6 text-xl font-bold text-slate-900">
-                      {servicio.Nombre_servicio}
-                    </h3>
+                  <h3 className="mt-6 text-xl font-bold text-slate-900">
+                    {servicio.Nombre_servicio}
+                  </h3>
 
-                    <p className="mt-4 leading-7 text-slate-600">
-                      Servicio personalizado según
-                      los requerimientos y objetivos
-                      del proyecto.
+                  <p className="mt-4 leading-7 text-slate-600">
+                    Servicio personalizado según los requerimientos y
+                    objetivos del proyecto.
+                  </p>
+
+                  <div className="mt-auto pt-7">
+                    <p className="text-sm text-slate-500">
+                      Valor referencial
                     </p>
 
-                    <div className="mt-auto pt-7">
-                      <p className="text-sm text-slate-500">
-                        Valor referencial
-                      </p>
-
-                      <p className="mt-1 text-2xl font-bold text-blue-600">
-                        {formateadorPrecio.format(
-                          servicio.valor
-                        )}
-                      </p>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            )}
+                    <p className="mt-1 text-2xl font-bold text-blue-600">
+                      {formateadorPrecio.format(servicio.valor)}
+                    </p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>
