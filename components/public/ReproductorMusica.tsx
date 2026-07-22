@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function ReproductorMusica() {
+  const t = useTranslations("Reproductor");
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const [reproduciendo, setReproduciendo] =
@@ -33,10 +35,7 @@ export default function ReproductorMusica() {
         setReproduciendo(false);
       }
     } catch (error) {
-      console.error(
-        "No fue posible reproducir el audio:",
-        error
-      );
+      console.error(t("errorReproduccion"), error);
     }
   }
 
@@ -65,8 +64,8 @@ export default function ReproductorMusica() {
         onClick={alternarReproduccion}
         aria-label={
           reproduciendo
-            ? "Pausar música"
-            : "Reproducir música"
+            ? t("pausar")
+            : t("reproducir")
         }
         className="flex h-11 w-11 items-center justify-center rounded-full bg-blue-600 transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
       >
@@ -97,8 +96,8 @@ export default function ReproductorMusica() {
         onClick={alternarSilencio}
         aria-label={
           silenciado
-            ? "Activar sonido"
-            : "Silenciar música"
+            ? t("activarSonido")
+            : t("silenciar")
         }
         className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-700 text-slate-300 transition hover:border-blue-500 hover:text-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
       >

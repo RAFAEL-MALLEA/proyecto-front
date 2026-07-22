@@ -1,37 +1,9 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+
 const correoContacto = "rafaelmallea2000@gmail.com";
 const numeroWhatsapp = "56968177179";
-
-const mensajeWhatsapp = encodeURIComponent(
-  "Hola Rafael, vi tu portafolio y me gustaría conversar sobre un proyecto."
-);
-
-const opcionesContacto = [
-  {
-    titulo: "Correo electrónico",
-    descripcion:
-      "Envíame un correo para conversar sobre oportunidades laborales o proyectos.",
-    enlace: `mailto:${correoContacto}`,
-    textoEnlace: correoContacto,
-    tipo: "correo",
-  },
-  {
-    titulo: "LinkedIn",
-    descripcion:
-      "Conoce más sobre mi experiencia, formación y trayectoria profesional.",
-    enlace:
-      "https://www.linkedin.com/in/rafael-m-6915ab223/",
-    textoEnlace: "Ver perfil profesional",
-    tipo: "linkedin",
-  },
-  {
-    titulo: "WhatsApp",
-    descripcion:
-      "Puedes escribirme directamente para solicitar información sobre mis servicios.",
-    enlace: `https://wa.me/${numeroWhatsapp}?text=${mensajeWhatsapp}`,
-    textoEnlace: "Enviar mensaje",
-    tipo: "whatsapp",
-  },
-];
 
 function IconoContacto({ tipo }: { tipo: string }) {
   if (tipo === "correo") {
@@ -83,6 +55,37 @@ function IconoContacto({ tipo }: { tipo: string }) {
 }
 
 export default function ContactoSection() {
+  const t = useTranslations("Contacto");
+
+  const mensajeWhatsapp = encodeURIComponent(
+    t("mensajeWhatsapp")
+  );
+
+  const opcionesContacto = [
+    {
+      titulo: t("correoTitulo"),
+      descripcion: t("correoDescripcion"),
+      enlace: `mailto:${correoContacto}`,
+      textoEnlace: correoContacto,
+      tipo: "correo",
+    },
+    {
+      titulo: t("linkedinTitulo"),
+      descripcion: t("linkedinDescripcion"),
+      enlace:
+        "https://www.linkedin.com/in/rafael-m-6915ab223/",
+      textoEnlace: t("linkedinEnlace"),
+      tipo: "linkedin",
+    },
+    {
+      titulo: t("whatsappTitulo"),
+      descripcion: t("whatsappDescripcion"),
+      enlace: `https://wa.me/${numeroWhatsapp}?text=${mensajeWhatsapp}`,
+      textoEnlace: t("whatsappEnlace"),
+      tipo: "whatsapp",
+    },
+  ];
+
   return (
     <section
       id="contacto"
@@ -91,16 +94,15 @@ export default function ContactoSection() {
       <div className="mx-auto max-w-6xl">
         <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.25em] text-blue-400">
-            Contacto
+            {t("etiqueta")}
           </p>
 
           <h2 className="mt-4 text-3xl font-bold sm:text-4xl">
-            Conversemos sobre tu próximo proyecto
+            {t("titulo")}
           </h2>
 
           <p className="mt-5 leading-8 text-slate-400">
-            Estoy disponible para oportunidades laborales, proyectos de
-            desarrollo web, soporte tecnológico y nuevas colaboraciones.
+            {t("descripcion")}
           </p>
         </div>
 

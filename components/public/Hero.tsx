@@ -1,4 +1,10 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+
 export default function Hero() {
+  const t = useTranslations("Hero");
+
   const tecnologias = [
     "Next.js",
     "React",
@@ -27,25 +33,22 @@ export default function Hero() {
       <div className="relative mx-auto flex w-full max-w-6xl flex-col items-center gap-14 lg:flex-row lg:justify-between">
         <div className="w-full lg:w-[55%]">
           <p className="text-sm font-semibold uppercase tracking-[0.25em] text-blue-400">
-            Ingeniero en Informática
+            {t("profesion")}
           </p>
 
           <h1 className="mt-4 text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
-            Hola, soy{" "}
+            {t("saludo")}{" "}
             <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
               Rafael Mallea Ramírez
             </span>
           </h1>
 
           <h2 className="mt-5 text-xl font-semibold text-slate-200 sm:text-2xl">
-            Desarrollador Full Stack
+            {t("cargo")}
           </h2>
 
           <p className="mt-6 max-w-2xl text-base leading-8 text-slate-400 sm:text-lg">
-            Desarrollo soluciones web conectando interfaces modernas,
-            APIs REST y bases de datos. Mi objetivo es crear aplicaciones
-            funcionales, ordenadas y orientadas a resolver necesidades
-            reales.
+            {t("descripcion")}
           </p>
 
           <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
@@ -53,14 +56,14 @@ export default function Hero() {
               href="#servicios"
               className="w-full rounded-lg bg-blue-600 px-6 py-3 text-center font-semibold text-white transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-950 sm:w-auto"
             >
-              Ver mis servicios
+              {t("verServicios")}
             </a>
 
             <a
               href="#certificaciones"
               className="w-full rounded-lg border border-slate-600 px-6 py-3 text-center font-semibold text-slate-200 transition hover:border-blue-400 hover:bg-blue-500/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-950 sm:w-auto"
             >
-              Ver certificaciones
+              {t("verCertificaciones")}
             </a>
 
             <a
@@ -68,7 +71,7 @@ export default function Hero() {
               download="rafael-mallea-cv.pdf"
               className="w-full rounded-lg border border-slate-600 px-6 py-3 text-center font-semibold text-slate-200 transition hover:border-blue-400 hover:bg-blue-500/10 hover:text-white sm:w-auto"
             >
-              Descargar CV
+              {t("descargarCv")}
             </a>
           </div>
         </div>
@@ -83,21 +86,20 @@ export default function Hero() {
 
             <div className="mt-8">
               <p className="font-mono text-sm text-blue-300">
-                perfil_profesional
+                {t("perfilCodigo")}
               </p>
 
               <h3 className="mt-3 text-2xl font-bold text-white">
-                Desarrollo web y soporte tecnológico
+                {t("tarjetaTitulo")}
               </h3>
 
               <p className="mt-4 leading-7 text-slate-400">
-                Experiencia trabajando con frontend, backend, bases de
-                datos, soporte TI y administración de sistemas.
+                {t("tarjetaDescripcion")}
               </p>
 
               <div className="mt-7">
                 <p className="text-sm font-semibold uppercase tracking-wider text-slate-300">
-                  Tecnologías principales
+                  {t("tecnologias")}
                 </p>
 
                 <div className="mt-4 flex flex-wrap gap-3">

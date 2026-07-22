@@ -1,29 +1,33 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
-const enlacesNavegacion = [
-  {
-    nombre: "Inicio",
-    href: "#inicio",
-  },
-  {
-    nombre: "Servicios",
-    href: "#servicios",
-  },
-  {
-    nombre: "Certificaciones",
-    href: "#certificaciones",
-  },
-  {
-    nombre: "Contacto",
-    href: "#contacto",
-  },
-];
+import SelectorIdioma from "@/components/public/SelectorIdioma";
 
 export default function HeaderPublico() {
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const t = useTranslations("Header");
+
+  const enlacesNavegacion = [
+    {
+      nombre: t("inicio"),
+      href: "#inicio",
+    },
+    {
+      nombre: t("servicios"),
+      href: "#servicios",
+    },
+    {
+      nombre: t("certificaciones"),
+      href: "#certificaciones",
+    },
+    {
+      nombre: t("contacto"),
+      href: "#contacto",
+    },
+  ];
 
   function cerrarMenu() {
     setMenuAbierto(false);
@@ -42,8 +46,8 @@ export default function HeaderPublico() {
         </a>
 
         <nav
-          aria-label="Navegación principal"
-          className="hidden items-center gap-8 md:flex"
+          aria-label={t("navegacionPrincipal")}
+          className="hidden items-center gap-6 md:flex"
         >
           {enlacesNavegacion.map((enlace) => (
             <a
@@ -55,17 +59,23 @@ export default function HeaderPublico() {
             </a>
           ))}
 
+          <SelectorIdioma />
+
           <Link
             href="/login"
             className="rounded-lg border border-blue-500 px-4 py-2 text-sm font-semibold text-blue-300 transition hover:bg-blue-600 hover:text-white"
           >
-            Administrar
+            {t("administrar")}
           </Link>
         </nav>
 
         <button
           type="button"
-          aria-label={menuAbierto ? "Cerrar menú" : "Abrir menú"}
+          aria-label={
+            menuAbierto
+              ? t("cerrarMenu")
+              : t("abrirMenu")
+          }
           aria-expanded={menuAbierto}
           aria-controls="menu-movil"
           onClick={() =>
@@ -107,7 +117,7 @@ export default function HeaderPublico() {
       {menuAbierto && (
         <nav
           id="menu-movil"
-          aria-label="Navegación móvil"
+          aria-label={t("navegacionMovil")}
           className="border-t border-slate-800 bg-slate-950 px-6 py-5 md:hidden"
         >
           <div className="mx-auto flex w-full max-w-6xl flex-col gap-2">
@@ -122,12 +132,16 @@ export default function HeaderPublico() {
               </a>
             ))}
 
+            <div className="px-4 py-2">
+              <SelectorIdioma />
+            </div>
+
             <Link
               href="/login"
               onClick={cerrarMenu}
               className="mt-2 rounded-lg bg-blue-600 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-blue-500"
             >
-              Administrar
+              {t("administrar")}
             </Link>
           </div>
         </nav>

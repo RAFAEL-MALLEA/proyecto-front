@@ -1,0 +1,89 @@
+{
+  "Header": {
+    "inicio": "Home",
+    "servicios": "Services",
+    "certificaciones": "Certifications",
+    "contacto": "Contact",
+    "administrar": "Admin",
+    "navegacionPrincipal": "Main navigation",
+    "navegacionMovil": "Mobile navigation",
+    "abrirMenu": "Open menu",
+    "cerrarMenu": "Close menu",
+    "selectorIdioma": "Language selector",
+    "cambiarEspanol": "Change language to Spanish",
+    "cambiarIngles": "Change language to English"
+  },
+  "Hero": {
+    "profesion": "Computer Engineer",
+    "saludo": "Hello, I am",
+    "cargo": "Full Stack Developer",
+    "descripcion": "I build web solutions by connecting modern interfaces, REST APIs and databases. My goal is to create functional, well-structured applications focused on solving real needs.",
+    "verServicios": "View my services",
+    "verCertificaciones": "View certifications",
+    "descargarCv": "Download CV",
+    "perfilCodigo": "professional_profile",
+    "tarjetaTitulo": "Web development and IT support",
+    "tarjetaDescripcion": "Experience working with frontend, backend, databases, IT support and systems administration.",
+    "tecnologias": "Main technologies"
+  },
+  "Servicios": {
+    "etiqueta": "Services",
+    "titulo": "Technology solutions for your projects",
+    "descripcion": "Services focused on web development, IT support and solutions adapted to the needs of each project.",
+    "cargando": "Loading services...",
+    "errorTitulo": "Services could not be loaded",
+    "errorDesconocido": "An unexpected error occurred.",
+    "sinServicios": "There are currently no published services.",
+    "descripcionTarjeta": "A personalized service based on the project's requirements and goals.",
+    "valorReferencial": "Reference price"
+  },
+  "Certificaciones": {
+    "etiqueta": "Certifications",
+    "titulo": "Continuous training and learning",
+    "descripcion": "Certifications and courses that support my knowledge of software development, programming and information technology.",
+    "cargando": "Loading certifications...",
+    "errorTitulo": "Certifications could not be loaded",
+    "errorDesconocido": "An unexpected error occurred.",
+    "sinCertificaciones": "There are currently no published certifications.",
+    "estadoCompletado": "Completed",
+    "estadoTerminado": "Finished",
+    "institucionNoEspecificada": "Institution not specified",
+    "sinDescripcion": "No description available.",
+    "fechaObtencion": "Date obtained"
+  },
+  "Contacto": {
+    "etiqueta": "Contact",
+    "titulo": "Let's talk about your next project",
+    "descripcion": "I am available for job opportunities, web development projects, IT support and new collaborations.",
+    "correoTitulo": "Email",
+    "correoDescripcion": "Send me an email to discuss job opportunities or projects.",
+    "linkedinTitulo": "LinkedIn",
+    "linkedinDescripcion": "Learn more about my experience, education and professional background.",
+    "linkedinEnlace": "View professional profile",
+    "whatsappTitulo": "WhatsApp",
+    "whatsappDescripcion": "You can message me directly to request information about my services.",
+    "whatsappEnlace": "Send message",
+    "mensajeWhatsapp": "Hello Rafael, I saw your portfolio and I would like to discuss a project."
+  },
+  "Footer": {
+    "descripcion": "Computer Engineer and Junior Full Stack Developer focused on creating functional, modern web solutions adapted to real needs.",
+    "navegacion": "Navigation",
+    "navegacionFooter": "Footer navigation",
+    "inicio": "Home",
+    "servicios": "Services",
+    "certificaciones": "Certifications",
+    "contacto": "Contact",
+    "perfilProfesional": "Professional profile",
+    "linkedinDescripcion": "Learn more about my experience, education and professional background on LinkedIn.",
+    "verLinkedin": "View LinkedIn profile",
+    "derechos": "© {anio} Rafael Alejandro Mallea Ramírez. All rights reserved.",
+    "desarrollado": "Built with Next.js, TypeScript and Tailwind CSS."
+  },
+  "Reproductor": {
+    "reproducir": "Play music",
+    "pausar": "Pause music",
+    "silenciar": "Mute music",
+    "activarSonido": "Unmute music",
+    "errorReproduccion": "The audio could not be played:"
+  }
+}

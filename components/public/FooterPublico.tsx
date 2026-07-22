@@ -1,24 +1,29 @@
-const enlacesNavegacion = [
-  {
-    nombre: "Inicio",
-    href: "#inicio",
-  },
-  {
-    nombre: "Servicios",
-    href: "#servicios",
-  },
-  {
-    nombre: "Certificaciones",
-    href: "#certificaciones",
-  },
-  {
-    nombre: "Contacto",
-    href: "#contacto",
-  },
-];
+"use client";
+
+import { useTranslations } from "next-intl";
 
 export default function FooterPublico() {
+  const t = useTranslations("Footer");
   const anioActual = new Date().getFullYear();
+
+  const enlacesNavegacion = [
+    {
+      nombre: t("inicio"),
+      href: "#inicio",
+    },
+    {
+      nombre: t("servicios"),
+      href: "#servicios",
+    },
+    {
+      nombre: t("certificaciones"),
+      href: "#certificaciones",
+    },
+    {
+      nombre: t("contacto"),
+      href: "#contacto",
+    },
+  ];
 
   return (
     <footer className="border-t border-slate-800 bg-slate-950 px-6 py-12 text-white">
@@ -34,19 +39,17 @@ export default function FooterPublico() {
             </a>
 
             <p className="mt-4 max-w-sm leading-7 text-slate-400">
-              Ingeniero en Informática y desarrollador Full Stack Junior,
-              enfocado en crear soluciones web funcionales, modernas y
-              adaptadas a necesidades reales.
+              {t("descripcion")}
             </p>
           </div>
 
           <div className="w-full md:min-w-40 md:flex-1">
             <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-200">
-              Navegación
+              {t("navegacion")}
             </h2>
 
             <nav
-              aria-label="Navegación del pie de página"
+              aria-label={t("navegacionFooter")}
               className="mt-5 flex flex-col items-start gap-3"
             >
               {enlacesNavegacion.map((enlace) => (
@@ -63,12 +66,11 @@ export default function FooterPublico() {
 
           <div className="w-full md:flex-1">
             <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-200">
-              Perfil profesional
+              {t("perfilProfesional")}
             </h2>
 
             <p className="mt-5 text-sm leading-7 text-slate-400">
-              Puedes conocer más sobre mi experiencia, formación y
-              trayectoria profesional en LinkedIn.
+              {t("linkedinDescripcion")}
             </p>
 
             <a
@@ -77,7 +79,7 @@ export default function FooterPublico() {
               rel="noreferrer"
               className="mt-5 inline-flex items-center gap-2 rounded-lg border border-blue-500 px-4 py-2 text-sm font-semibold text-blue-300 transition hover:bg-blue-600 hover:text-white"
             >
-              Ver perfil de LinkedIn
+              {t("verLinkedin")}
 
               <svg
                 aria-hidden="true"
@@ -97,14 +99,8 @@ export default function FooterPublico() {
         </div>
 
         <div className="mt-12 flex flex-col gap-4 border-t border-slate-800 pt-7 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © {anioActual} Rafael Alejandro Mallea Ramírez. Todos los
-            derechos reservados.
-          </p>
-
-          <p>
-            Desarrollado con Next.js, TypeScript y Tailwind CSS.
-          </p>
+          <p>{t("derechos", { anio: anioActual })}</p>
+          <p>{t("desarrollado")}</p>
         </div>
       </div>
     </footer>

@@ -1,0 +1,89 @@
+{
+  "Header": {
+    "inicio": "Inicio",
+    "servicios": "Servicios",
+    "certificaciones": "Certificaciones",
+    "contacto": "Contacto",
+    "administrar": "Administrar",
+    "navegacionPrincipal": "Navegación principal",
+    "navegacionMovil": "Navegación móvil",
+    "abrirMenu": "Abrir menú",
+    "cerrarMenu": "Cerrar menú",
+    "selectorIdioma": "Selector de idioma",
+    "cambiarEspanol": "Cambiar idioma a español",
+    "cambiarIngles": "Cambiar idioma a inglés"
+  },
+  "Hero": {
+    "profesion": "Ingeniero en Informática",
+    "saludo": "Hola, soy",
+    "cargo": "Desarrollador Full Stack",
+    "descripcion": "Desarrollo soluciones web conectando interfaces modernas, APIs REST y bases de datos. Mi objetivo es crear aplicaciones funcionales, ordenadas y orientadas a resolver necesidades reales.",
+    "verServicios": "Ver mis servicios",
+    "verCertificaciones": "Ver certificaciones",
+    "descargarCv": "Descargar CV",
+    "perfilCodigo": "perfil_profesional",
+    "tarjetaTitulo": "Desarrollo web y soporte tecnológico",
+    "tarjetaDescripcion": "Experiencia trabajando con frontend, backend, bases de datos, soporte TI y administración de sistemas.",
+    "tecnologias": "Tecnologías principales"
+  },
+  "Servicios": {
+    "etiqueta": "Servicios",
+    "titulo": "Soluciones tecnológicas para tus proyectos",
+    "descripcion": "Servicios enfocados en desarrollo web, soporte tecnológico y creación de soluciones adaptadas a las necesidades de cada proyecto.",
+    "cargando": "Cargando servicios...",
+    "errorTitulo": "No fue posible cargar los servicios",
+    "errorDesconocido": "Ocurrió un error inesperado.",
+    "sinServicios": "Actualmente no existen servicios publicados.",
+    "descripcionTarjeta": "Servicio personalizado según los requerimientos y objetivos del proyecto.",
+    "valorReferencial": "Valor referencial"
+  },
+  "Certificaciones": {
+    "etiqueta": "Certificaciones",
+    "titulo": "Formación y aprendizaje continuo",
+    "descripcion": "Certificaciones y cursos que respaldan mis conocimientos en desarrollo de software, programación y tecnologías de la información.",
+    "cargando": "Cargando certificaciones...",
+    "errorTitulo": "No fue posible cargar las certificaciones",
+    "errorDesconocido": "Ocurrió un error inesperado.",
+    "sinCertificaciones": "Actualmente no existen certificaciones publicadas.",
+    "estadoCompletado": "Completado",
+    "estadoTerminado": "Terminado",
+    "institucionNoEspecificada": "Institución no especificada",
+    "sinDescripcion": "Sin descripción disponible.",
+    "fechaObtencion": "Fecha de obtención"
+  },
+  "Contacto": {
+    "etiqueta": "Contacto",
+    "titulo": "Conversemos sobre tu próximo proyecto",
+    "descripcion": "Estoy disponible para oportunidades laborales, proyectos de desarrollo web, soporte tecnológico y nuevas colaboraciones.",
+    "correoTitulo": "Correo electrónico",
+    "correoDescripcion": "Envíame un correo para conversar sobre oportunidades laborales o proyectos.",
+    "linkedinTitulo": "LinkedIn",
+    "linkedinDescripcion": "Conoce más sobre mi experiencia, formación y trayectoria profesional.",
+    "linkedinEnlace": "Ver perfil profesional",
+    "whatsappTitulo": "WhatsApp",
+    "whatsappDescripcion": "Puedes escribirme directamente para solicitar información sobre mis servicios.",
+    "whatsappEnlace": "Enviar mensaje",
+    "mensajeWhatsapp": "Hola Rafael, vi tu portafolio y me gustaría conversar sobre un proyecto."
+  },
+  "Footer": {
+    "descripcion": "Ingeniero en Informática y desarrollador Full Stack Junior, enfocado en crear soluciones web funcionales, modernas y adaptadas a necesidades reales.",
+    "navegacion": "Navegación",
+    "navegacionFooter": "Navegación del pie de página",
+    "inicio": "Inicio",
+    "servicios": "Servicios",
+    "certificaciones": "Certificaciones",
+    "contacto": "Contacto",
+    "perfilProfesional": "Perfil profesional",
+    "linkedinDescripcion": "Puedes conocer más sobre mi experiencia, formación y trayectoria profesional en LinkedIn.",
+    "verLinkedin": "Ver perfil de LinkedIn",
+    "derechos": "© {anio} Rafael Alejandro Mallea Ramírez. Todos los derechos reservados.",
+    "desarrollado": "Desarrollado con Next.js, TypeScript y Tailwind CSS."
+  },
+  "Reproductor": {
+    "reproducir": "Reproducir música",
+    "pausar": "Pausar música",
+    "silenciar": "Silenciar música",
+    "activarSonido": "Activar sonido",
+    "errorReproduccion": "No fue posible reproducir el audio:"
+  }
+}

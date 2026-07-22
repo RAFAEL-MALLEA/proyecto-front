@@ -1,31 +1,36 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 
 import EstadoCarga from "@/components/public/EstadoCarga";
 import MensajeError from "@/components/public/MensajeError";
 import { obtenerCertificaciones } from "@/services/certificaciones";
 import type { Certificacion } from "@/types/Certificacion";
 
-const formateadorFecha = new Intl.DateTimeFormat("es-CL", {
-  day: "2-digit",
-  month: "long",
-  year: "numeric",
-});
-
-function formatearFecha(fecha: string) {
-  const [anio, mes, dia] = fecha.split("-").map(Number);
-  const fechaLocal = new Date(anio, mes - 1, dia);
-
-  return formateadorFecha.format(fechaLocal);
-}
-
 export default function CertificacionesSection() {
+  const locale = useLocale();
+  const t = useTranslations("Certificaciones");
+
   const [certificaciones, setCertificaciones] = useState<
     Certificacion[]
   >([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  function formatearFecha(fecha: string) {
+    const [anio, mes, dia] = fecha.split("-").map(Number);
+    const fechaLocal = new Date(anio, mes - 1, dia);
+
+    return new Intl.DateTimeFormat(
+      locale === "en" ? "en-US" : "es-CL",
+      {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      }
+    ).format(fechaLocal);
+  }
 
   useEffect(() => {
     let componenteActivo = true;
@@ -49,7 +54,7 @@ export default function CertificacionesSection() {
         const mensaje =
           errorDesconocido instanceof Error
             ? errorDesconocido.message
-            : "Ocurrió un error inesperado.";
+            : t("errorDesconocido");
 
         setError(mensaje);
       } finally {
@@ -64,7 +69,7 @@ export default function CertificacionesSection() {
     return () => {
       componenteActivo = false;
     };
-  }, []);
+  }, [t]);
 
   return (
     <section
@@ -74,27 +79,28 @@ export default function CertificacionesSection() {
       <div className="mx-auto max-w-6xl">
         <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.25em] text-blue-600">
-            Certificaciones
+            {t("etiqueta")}
           </p>
 
           <h2 className="mt-4 text-3xl font-bold text-slate-900 sm:text-4xl">
-            Formación y aprendizaje continuo
+            {t("titulo")}
           </h2>
 
           <p className="mt-5 leading-8 text-slate-600">
-            Certificaciones y cursos que respaldan mis conocimientos en
-            desarrollo de software, programación y tecnologías de la
-            información.
+            {t("descripcion")}
           </p>
         </div>
 
         <div className="mt-14">
           {cargando && (
-            <EstadoCarga mensaje="Cargando certificaciones..." />
+            <EstadoCarga mensaje={t("cargando")} />
           )}
 
           {!cargando && error && (
-            <MensajeError mensaje={error} />
+            <MensajeError
+              titulo={t("errorTitulo")}
+              mensaje={error}
+            />
           )}
 
           {!cargando &&
@@ -102,7 +108,7 @@ export default function CertificacionesSection() {
             certificaciones.length === 0 && (
               <div className="rounded-xl border border-slate-200 bg-slate-50 px-6 py-10 text-center">
                 <p className="text-slate-500">
-                  Actualmente no existen certificaciones publicadas.
+                  {t("sinCertificaciones")}
                 </p>
               </div>
             )}
@@ -128,7 +134,9 @@ export default function CertificacionesSection() {
                             : "rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700"
                         }
                       >
-                        {certificacion.estado}
+                        {certificacion.estado === "Completado"
+                          ? t("estadoCompletado")
+                          : t("estadoTerminado")}
                       </span>
                     </div>
 
@@ -138,17 +146,17 @@ export default function CertificacionesSection() {
 
                     <p className="mt-3 text-sm font-medium text-blue-600">
                       {certificacion.institucion ??
-                        "Institución no especificada"}
+                        t("institucionNoEspecificada")}
                     </p>
 
                     <p className="mt-4 flex-grow leading-7 text-slate-600">
                       {certificacion.descripcion ??
-                        "Sin descripción disponible."}
+                        t("sinDescripcion")}
                     </p>
 
                     <div className="mt-7 border-t border-slate-200 pt-5">
                       <p className="text-sm text-slate-500">
-                        Fecha de obtención
+                        {t("fechaObtencion")}
                       </p>
 
                       <p className="mt-1 font-semibold text-slate-800">
