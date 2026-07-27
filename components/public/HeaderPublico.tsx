@@ -24,6 +24,10 @@ export default function HeaderPublico() {
       href: "#proyectos",
     },
     {
+      nombre: t("tecnologias"),
+      href: "#tecnologias",
+    },
+    {
       nombre: t("certificaciones"),
       href: "#certificaciones",
     },
