@@ -3,50 +3,66 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+
 const enlaces = [
   {
-    href: "/admin",
     nombre: "Inicio",
+    href: "/admin",
   },
   {
-    href: "/admin/certificaciones",
     nombre: "Certificaciones",
+    href: "/admin/certificaciones",
   },
   {
-    href: "/admin/servicios",
     nombre: "Servicios",
+    href: "/admin/servicios",
   },
-    {
-    href: "/admin/proyectos",
+  {
     nombre: "Proyectos",
+    href: "/admin/proyectos",
+  },
+  {
+    nombre: "Tecnologías",
+    href: "/admin/tecnologias",
   },
 ];
+
 
 export default function Sidebar() {
   const pathname = usePathname();
 
+  function enlaceActivo(href: string): boolean {
+    if (href === "/admin") {
+      return pathname === "/admin";
+    }
+
+    return pathname === href ||
+      pathname.startsWith(`${href}/`);
+  }
+
   return (
-    <aside className="w-72 shrink-0 rounded-xl bg-blue-300 p-5 shadow-sm">
-      <h2 className="text-xl font-bold text-slate-700">
+    <aside className="w-full rounded-2xl bg-blue-300 p-5 shadow-sm lg:min-h-[calc(100vh-7rem)] lg:w-72">
+      <h2 className="text-xl font-bold text-slate-800">
         Panel de administración
       </h2>
 
-      <nav className="mt-8 space-y-2">
+      <nav
+        aria-label="Navegación administrativa"
+        className="mt-8 flex flex-col gap-2"
+      >
         {enlaces.map((enlace) => {
-          const estaActivo =
-            enlace.href === "/admin"
-              ? pathname === "/admin"
-              : pathname.startsWith(enlace.href);
+          const activo = enlaceActivo(enlace.href);
 
           return (
             <Link
               key={enlace.href}
               href={enlace.href}
-              className={`block rounded-lg px-4 py-3 text-sm font-medium transition ${
-                estaActivo
-                  ? "bg-white text-blue-700 shadow-sm"
-                  : "text-slate-700 hover:bg-blue-200"
-              }`}
+              aria-current={activo ? "page" : undefined}
+              className={
+                activo
+                  ? "rounded-lg bg-white px-4 py-3 font-semibold text-blue-700 shadow-sm"
+                  : "rounded-lg px-4 py-3 font-medium text-slate-800 transition hover:bg-white/60 hover:text-blue-700"
+              }
             >
               {enlace.nombre}
             </Link>
