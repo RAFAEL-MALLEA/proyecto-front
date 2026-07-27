@@ -16,6 +16,10 @@ export default function FooterPublico() {
       href: "#servicios",
     },
     {
+      nombre: t("proyectos"),
+      href: "#proyectos",
+    },
+    {
       nombre: t("certificaciones"),
       href: "#certificaciones",
     },

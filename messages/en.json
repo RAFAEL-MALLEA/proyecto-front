@@ -2,6 +2,7 @@
   "Header": {
     "inicio": "Home",
     "servicios": "Services",
+    "proyectos": "Projects",
     "certificaciones": "Certifications",
     "contacto": "Contact",
     "administrar": "Admin",
@@ -71,6 +72,7 @@
     "navegacionFooter": "Footer navigation",
     "inicio": "Home",
     "servicios": "Services",
+    "proyectos": "Projects",
     "certificaciones": "Certifications",
     "contacto": "Contact",
     "perfilProfesional": "Professional profile",

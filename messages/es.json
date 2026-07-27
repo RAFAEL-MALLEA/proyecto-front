@@ -1,5 +1,4 @@
 {
-
   "Header": {
     "inicio": "Inicio",
     "servicios": "Servicios",
@@ -15,7 +14,6 @@
     "cambiarEspanol": "Cambiar idioma a español",
     "cambiarIngles": "Cambiar idioma a inglés"
   },
-
   "Hero": {
     "profesion": "Ingeniero en Informática",
     "saludo": "Hola, soy",
@@ -74,6 +72,7 @@
     "navegacionFooter": "Navegación del pie de página",
     "inicio": "Inicio",
     "servicios": "Servicios",
+    "proyectos": "Proyectos",
     "certificaciones": "Certificaciones",
     "contacto": "Contacto",
     "perfilProfesional": "Perfil profesional",
