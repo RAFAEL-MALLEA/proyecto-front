@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 
+import CrearTecnologiaForm from "@/components/CrearTecnologiaForm";
 import {
   actualizarTecnologia,
   eliminarTecnologia,
@@ -59,6 +60,28 @@ function obtenerMensajeError(
 }
 
 
+function ordenarTecnologias(
+  tecnologias: Tecnologia[]
+): Tecnologia[] {
+  return [...tecnologias].sort(
+    (tecnologiaA, tecnologiaB) => {
+      const diferenciaOrden =
+        tecnologiaA.orden - tecnologiaB.orden;
+
+      if (diferenciaOrden !== 0) {
+        return diferenciaOrden;
+      }
+
+      return tecnologiaA.nombre.localeCompare(
+        tecnologiaB.nombre,
+        "es",
+        { sensitivity: "base" }
+      );
+    }
+  );
+}
+
+
 export default function TecnologiasAdminPage() {
   const [tecnologias, setTecnologias] = useState<
     Tecnologia[]
@@ -86,7 +109,9 @@ export default function TecnologiasAdminPage() {
       const tecnologiasRecibidas =
         await obtenerTodasLasTecnologias();
 
-      setTecnologias(tecnologiasRecibidas);
+      setTecnologias(
+        ordenarTecnologias(tecnologiasRecibidas)
+      );
     } catch (errorDesconocido) {
       setError(
         obtenerMensajeError(errorDesconocido)
@@ -100,6 +125,23 @@ export default function TecnologiasAdminPage() {
   useEffect(() => {
     cargarTecnologias();
   }, [cargarTecnologias]);
+
+
+  function manejarTecnologiaCreada(
+    tecnologiaCreada: Tecnologia
+  ) {
+    setTecnologias((tecnologiasActuales) =>
+      ordenarTecnologias([
+        ...tecnologiasActuales,
+        tecnologiaCreada,
+      ])
+    );
+
+    setError(null);
+    setMensaje(
+      `Tecnología "${tecnologiaCreada.nombre}" creada correctamente.`
+    );
+  }
 
 
   async function cambiarEstadoPublicacion(
@@ -121,12 +163,14 @@ export default function TecnologiasAdminPage() {
         );
 
       setTecnologias((tecnologiasActuales) =>
-        tecnologiasActuales.map(
-          (tecnologiaActual) =>
-            tecnologiaActual.id ===
-            tecnologiaActualizada.id
-              ? tecnologiaActualizada
-              : tecnologiaActual
+        ordenarTecnologias(
+          tecnologiasActuales.map(
+            (tecnologiaActual) =>
+              tecnologiaActual.id ===
+              tecnologiaActualizada.id
+                ? tecnologiaActualizada
+                : tecnologiaActual
+          )
         )
       );
 
@@ -197,9 +241,9 @@ export default function TecnologiasAdminPage() {
             </h1>
 
             <p className="mt-3 max-w-2xl leading-7 text-slate-600">
-              Revisa las tecnologías registradas y controla
-              cuáles se mostrarán públicamente en el
-              portafolio.
+              Registra las tecnologías de tu perfil y
+              controla cuáles se mostrarán públicamente
+              en el portafolio.
             </p>
           </div>
 
@@ -222,12 +266,11 @@ export default function TecnologiasAdminPage() {
         </header>
 
 
-        <div className="rounded-xl border border-blue-200 bg-blue-50 px-5 py-4 text-sm leading-6 text-blue-900">
-          En esta primera versión puedes consultar,
-          publicar, pasar a borrador y eliminar
-          tecnologías. El formulario de creación se
-          agregará en el siguiente paso.
-        </div>
+        <CrearTecnologiaForm
+          onTecnologiaCreada={
+            manejarTecnologiaCreada
+          }
+        />
 
 
         {mensaje && (
@@ -273,9 +316,8 @@ export default function TecnologiasAdminPage() {
               </h2>
 
               <p className="mt-2 text-slate-600">
-                Registra temporalmente una tecnología
-                desde Swagger. El formulario del panel
-                se incorporará en el siguiente paso.
+                Utiliza el formulario superior para
+                registrar la primera tecnología.
               </p>
             </div>
           )}
