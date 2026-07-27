@@ -12,7 +12,8 @@
     "cerrarMenu": "Cerrar menú",
     "selectorIdioma": "Selector de idioma",
     "cambiarEspanol": "Cambiar idioma a español",
-    "cambiarIngles": "Cambiar idioma a inglés"
+    "cambiarIngles": "Cambiar idioma a inglés",
+    "tecnologias": "Tecnologías"
   },
   "Hero": {
     "profesion": "Ingeniero en Informática",
@@ -79,7 +80,8 @@
     "linkedinDescripcion": "Puedes conocer más sobre mi experiencia, formación y trayectoria profesional en LinkedIn.",
     "verLinkedin": "Ver perfil de LinkedIn",
     "derechos": "© {anio} Rafael Alejandro Mallea Ramírez. Todos los derechos reservados.",
-    "desarrollado": "Desarrollado con Next.js, TypeScript y Tailwind CSS."
+    "desarrollado": "Desarrollado con Next.js, TypeScript y Tailwind CSS.",
+    "tecnologias": "Tecnologías"
   },
   "Reproductor": {
     "reproducir": "Reproducir música",
@@ -101,5 +103,23 @@
     "demostracion": "Ver demostración",
     "repositorio": "Ver repositorio",
     "vistaPrevia": "Vista previa del proyecto {titulo}"
+  },
+  "Tecnologias": {
+    "etiqueta": "Tecnologías",
+    "titulo": "Herramientas que utilizo para construir soluciones",
+    "descripcion": "Tecnologías organizadas por área que utilizo para desarrollar interfaces, APIs, bases de datos y soluciones de soporte tecnológico.",
+    "cargando": "Cargando tecnologías...",
+    "errorTitulo": "No fue posible cargar las tecnologías",
+    "errorDesconocido": "Ocurrió un error inesperado.",
+    "sinTecnologias": "Actualmente no existen tecnologías publicadas.",
+    "sinCategoria": "Otras tecnologías",
+    "cantidad": "{cantidad, plural, one {# tecnología} other {# tecnologías}}",
+    "nivel": "Nivel: {nivel}",
+    "nivelBasico": "Básico",
+    "nivelIntermedio": "Intermedio",
+    "nivelAvanzado": "Avanzado",
+    "nivelNoEspecificado": "No especificado",
+    "sinDescripcion": "Tecnología utilizada en mis proyectos y procesos de desarrollo.",
+    "iconoAlternativo": "Icono de {nombre}"
   }
 }

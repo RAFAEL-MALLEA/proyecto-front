@@ -12,7 +12,8 @@
     "cerrarMenu": "Close menu",
     "selectorIdioma": "Language selector",
     "cambiarEspanol": "Change language to Spanish",
-    "cambiarIngles": "Change language to English"
+    "cambiarIngles": "Change language to English",
+    "tecnologias": "Technologies"
   },
   "Hero": {
     "profesion": "Computer Engineer",
@@ -79,7 +80,8 @@
     "linkedinDescripcion": "Learn more about my experience, education and professional background on LinkedIn.",
     "verLinkedin": "View LinkedIn profile",
     "derechos": "© {anio} Rafael Alejandro Mallea Ramírez. All rights reserved.",
-    "desarrollado": "Built with Next.js, TypeScript and Tailwind CSS."
+    "desarrollado": "Built with Next.js, TypeScript and Tailwind CSS.",
+    "tecnologias": "Technologies"
   },
   "Reproductor": {
     "reproducir": "Play music",
@@ -101,5 +103,23 @@
     "demostracion": "View live demo",
     "repositorio": "View repository",
     "vistaPrevia": "Preview of the {titulo} project"
+  },
+  "Tecnologias": {
+    "etiqueta": "Technologies",
+    "titulo": "Tools I use to build solutions",
+    "descripcion": "Technologies organized by area that I use to build interfaces, APIs, databases and IT support solutions.",
+    "cargando": "Loading technologies...",
+    "errorTitulo": "Technologies could not be loaded",
+    "errorDesconocido": "An unexpected error occurred.",
+    "sinTecnologias": "There are currently no published technologies.",
+    "sinCategoria": "Other technologies",
+    "cantidad": "{cantidad, plural, one {# technology} other {# technologies}}",
+    "nivel": "Level: {nivel}",
+    "nivelBasico": "Basic",
+    "nivelIntermedio": "Intermediate",
+    "nivelAvanzado": "Advanced",
+    "nivelNoEspecificado": "Not specified",
+    "sinDescripcion": "Technology used in my projects and development processes.",
+    "iconoAlternativo": "{nombre} icon"
   }
 }
