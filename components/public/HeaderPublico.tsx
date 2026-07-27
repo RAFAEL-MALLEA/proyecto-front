@@ -20,6 +20,10 @@ export default function HeaderPublico() {
       href: "#servicios",
     },
     {
+      nombre: t("proyectos"),
+      href: "#proyectos",
+    },
+    {
       nombre: t("certificaciones"),
       href: "#certificaciones",
     },

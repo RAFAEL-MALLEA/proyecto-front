@@ -5,6 +5,7 @@ import HeaderPublico from "@/components/public/HeaderPublico";
 import Hero from "@/components/public/Hero";
 import ReproductorMusica from "@/components/public/ReproductorMusica";
 import ServiciosSection from "@/components/public/ServiciosSection";
+import ProyectosSection from "@/components/public/ProyectosSection"
 
 export default function HomePage() {
   return (
@@ -12,10 +13,13 @@ export default function HomePage() {
       <HeaderPublico />
 
       <main>
-        <Hero />
-        <ServiciosSection />
-        <CertificacionesSection />
-        <ContactoSection />
+
+      <Hero />
+      <ServiciosSection />
+      <ProyectosSection />
+      <CertificacionesSection />
+      <ContactoSection />
+    
       </main>
 
       <FooterPublico />

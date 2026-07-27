@@ -85,5 +85,19 @@
     "silenciar": "Mute music",
     "activarSonido": "Unmute music",
     "errorReproduccion": "The audio could not be played:"
+  },
+  "Proyectos": {
+    "etiqueta": "Projects",
+    "titulo": "Solutions built from end to end",
+    "descripcion": "Projects where I apply frontend development, APIs, databases and good practices to solve real needs.",
+    "cargando": "Loading projects...",
+    "errorTitulo": "Projects could not be loaded",
+    "errorDesconocido": "An unexpected error occurred.",
+    "sinProyectos": "There are currently no published projects.",
+    "destacado": "Featured",
+    "tecnologias": "Technologies",
+    "demostracion": "View live demo",
+    "repositorio": "View repository",
+    "vistaPrevia": "Preview of the {titulo} project"
   }
 }

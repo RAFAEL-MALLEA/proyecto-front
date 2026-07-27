@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 import CrearProyectoForm from "@/components/CrearProyectoForm";
+import EditarProyectoForm from "@/components/EditarProyectoForm";
 import {
   actualizarProyecto,
   eliminarProyecto,
@@ -64,6 +65,11 @@ export default function ProyectosAdminPage() {
     setProyectoProcesandoId,
   ] = useState<number | null>(null);
 
+  const [
+    proyectoEditando,
+    setProyectoEditando,
+  ] = useState<Proyecto | null>(null);
+
 
   const cargarProyectos = useCallback(async () => {
     try {
@@ -101,6 +107,53 @@ export default function ProyectosAdminPage() {
     setMensaje(
       `Proyecto "${proyectoCreado.titulo}" creado correctamente.`
     );
+  }
+
+
+  function iniciarEdicion(
+    proyecto: Proyecto
+  ) {
+    setProyectoEditando(proyecto);
+    setError(null);
+    setMensaje(null);
+
+    requestAnimationFrame(() => {
+      document
+        .getElementById(
+          "formulario-edicion-proyecto"
+        )
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+    });
+  }
+
+
+  function manejarProyectoActualizado(
+    proyectoActualizado: Proyecto
+  ) {
+    setProyectos((proyectosActuales) =>
+      proyectosActuales.map(
+        (proyectoActual) =>
+          proyectoActual.id ===
+          proyectoActualizado.id
+            ? proyectoActualizado
+            : proyectoActual
+      )
+    );
+
+    setProyectoEditando(null);
+    setError(null);
+    setMensaje(
+      `Proyecto "${proyectoActualizado.titulo}" actualizado correctamente.`
+    );
+  }
+
+
+  function cancelarEdicion() {
+    setProyectoEditando(null);
+    setError(null);
   }
 
 
@@ -177,6 +230,12 @@ export default function ProyectosAdminPage() {
         )
       );
 
+      if (
+        proyectoEditando?.id === proyecto.id
+      ) {
+        setProyectoEditando(null);
+      }
+
       setMensaje("Proyecto eliminado correctamente.");
     } catch (errorDesconocido) {
       setError(
@@ -221,9 +280,22 @@ export default function ProyectosAdminPage() {
         </header>
 
 
-        <CrearProyectoForm
-          onProyectoCreado={manejarProyectoCreado}
-        />
+        {proyectoEditando ? (
+          <EditarProyectoForm
+            key={proyectoEditando.id}
+            proyecto={proyectoEditando}
+            onProyectoActualizado={
+              manejarProyectoActualizado
+            }
+            onCancelar={cancelarEdicion}
+          />
+        ) : (
+          <CrearProyectoForm
+            onProyectoCreado={
+              manejarProyectoCreado
+            }
+          />
+        )}
 
 
         {mensaje && (
@@ -355,6 +427,17 @@ export default function ProyectosAdminPage() {
 
 
                     <div className="mt-auto flex flex-wrap gap-3 pt-7">
+                      <button
+                        type="button"
+                        disabled={procesando}
+                        onClick={() =>
+                          iniciarEdicion(proyecto)
+                        }
+                        className="rounded-lg border border-blue-300 px-4 py-2.5 text-sm font-semibold text-blue-700 transition hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-60"
+                      >
+                        Editar
+                      </button>
+
                       <button
                         type="button"
                         disabled={procesando}

@@ -1,7 +1,9 @@
 {
+
   "Header": {
     "inicio": "Inicio",
     "servicios": "Servicios",
+    "proyectos": "Proyectos",
     "certificaciones": "Certificaciones",
     "contacto": "Contacto",
     "administrar": "Administrar",
@@ -13,6 +15,7 @@
     "cambiarEspanol": "Cambiar idioma a español",
     "cambiarIngles": "Cambiar idioma a inglés"
   },
+
   "Hero": {
     "profesion": "Ingeniero en Informática",
     "saludo": "Hola, soy",
@@ -85,5 +88,19 @@
     "silenciar": "Silenciar música",
     "activarSonido": "Activar sonido",
     "errorReproduccion": "No fue posible reproducir el audio:"
+  },
+  "Proyectos": {
+    "etiqueta": "Proyectos",
+    "titulo": "Soluciones construidas de principio a fin",
+    "descripcion": "Proyectos donde aplico desarrollo frontend, APIs, bases de datos y buenas prácticas para resolver necesidades reales.",
+    "cargando": "Cargando proyectos...",
+    "errorTitulo": "No fue posible cargar los proyectos",
+    "errorDesconocido": "Ocurrió un error inesperado.",
+    "sinProyectos": "Actualmente no existen proyectos publicados.",
+    "destacado": "Destacado",
+    "tecnologias": "Tecnologías",
+    "demostracion": "Ver demostración",
+    "repositorio": "Ver repositorio",
+    "vistaPrevia": "Vista previa del proyecto {titulo}"
   }
 }
