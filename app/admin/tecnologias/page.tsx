@@ -7,6 +7,7 @@ import {
 } from "react";
 
 import CrearTecnologiaForm from "@/components/CrearTecnologiaForm";
+import EditarTecnologiaForm from "@/components/EditarTecnologiaForm";
 import {
   actualizarTecnologia,
   eliminarTecnologia,
@@ -100,6 +101,9 @@ export default function TecnologiasAdminPage() {
   const [tecnologiaProcesandoId, setTecnologiaProcesandoId] =
     useState<number | null>(null);
 
+  const [tecnologiaEditando, setTecnologiaEditando] =
+    useState<Tecnologia | null>(null);
+
 
   const cargarTecnologias = useCallback(async () => {
     try {
@@ -109,9 +113,23 @@ export default function TecnologiasAdminPage() {
       const tecnologiasRecibidas =
         await obtenerTodasLasTecnologias();
 
-      setTecnologias(
-        ordenarTecnologias(tecnologiasRecibidas)
-      );
+      const tecnologiasOrdenadas =
+        ordenarTecnologias(tecnologiasRecibidas);
+
+      setTecnologias(tecnologiasOrdenadas);
+
+      setTecnologiaEditando((tecnologiaActual) => {
+        if (!tecnologiaActual) {
+          return null;
+        }
+
+        return (
+          tecnologiasOrdenadas.find(
+            (tecnologia) =>
+              tecnologia.id === tecnologiaActual.id
+          ) ?? null
+        );
+      });
     } catch (errorDesconocido) {
       setError(
         obtenerMensajeError(errorDesconocido)
@@ -144,6 +162,55 @@ export default function TecnologiasAdminPage() {
   }
 
 
+  function iniciarEdicion(
+    tecnologia: Tecnologia
+  ) {
+    setTecnologiaEditando(tecnologia);
+    setError(null);
+    setMensaje(null);
+
+    requestAnimationFrame(() => {
+      document
+        .getElementById(
+          "formulario-edicion-tecnologia"
+        )
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+    });
+  }
+
+
+  function manejarTecnologiaActualizada(
+    tecnologiaActualizada: Tecnologia
+  ) {
+    setTecnologias((tecnologiasActuales) =>
+      ordenarTecnologias(
+        tecnologiasActuales.map(
+          (tecnologiaActual) =>
+            tecnologiaActual.id ===
+            tecnologiaActualizada.id
+              ? tecnologiaActualizada
+              : tecnologiaActual
+        )
+      )
+    );
+
+    setTecnologiaEditando(null);
+    setError(null);
+    setMensaje(
+      `Tecnología "${tecnologiaActualizada.nombre}" actualizada correctamente.`
+    );
+  }
+
+
+  function cancelarEdicion() {
+    setTecnologiaEditando(null);
+    setError(null);
+  }
+
+
   async function cambiarEstadoPublicacion(
     tecnologia: Tecnologia
   ) {
@@ -172,6 +239,13 @@ export default function TecnologiasAdminPage() {
                 : tecnologiaActual
           )
         )
+      );
+
+      setTecnologiaEditando((tecnologiaActual) =>
+        tecnologiaActual?.id ===
+        tecnologiaActualizada.id
+          ? tecnologiaActualizada
+          : tecnologiaActual
       );
 
       setMensaje(
@@ -214,6 +288,12 @@ export default function TecnologiasAdminPage() {
         )
       );
 
+      if (
+        tecnologiaEditando?.id === tecnologia.id
+      ) {
+        setTecnologiaEditando(null);
+      }
+
       setMensaje(
         `Tecnología "${tecnologia.nombre}" eliminada correctamente.`
       );
@@ -241,9 +321,8 @@ export default function TecnologiasAdminPage() {
             </h1>
 
             <p className="mt-3 max-w-2xl leading-7 text-slate-600">
-              Registra las tecnologías de tu perfil y
-              controla cuáles se mostrarán públicamente
-              en el portafolio.
+              Crea, edita y administra las tecnologías
+              que se mostrarán en tu portafolio.
             </p>
           </div>
 
@@ -266,11 +345,22 @@ export default function TecnologiasAdminPage() {
         </header>
 
 
-        <CrearTecnologiaForm
-          onTecnologiaCreada={
-            manejarTecnologiaCreada
-          }
-        />
+        {tecnologiaEditando ? (
+          <EditarTecnologiaForm
+            key={tecnologiaEditando.id}
+            tecnologia={tecnologiaEditando}
+            onTecnologiaActualizada={
+              manejarTecnologiaActualizada
+            }
+            onCancelar={cancelarEdicion}
+          />
+        ) : (
+          <CrearTecnologiaForm
+            onTecnologiaCreada={
+              manejarTecnologiaCreada
+            }
+          />
+        )}
 
 
         {mensaje && (
@@ -331,10 +421,18 @@ export default function TecnologiasAdminPage() {
                   tecnologiaProcesandoId ===
                   tecnologia.id;
 
+                const editando =
+                  tecnologiaEditando?.id ===
+                  tecnologia.id;
+
                 return (
                   <article
                     key={tecnologia.id}
-                    className="flex w-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:w-[calc(50%-0.75rem)]"
+                    className={
+                      editando
+                        ? "flex w-full flex-col rounded-2xl border border-blue-400 bg-blue-50/40 p-6 shadow-sm md:w-[calc(50%-0.75rem)]"
+                        : "flex w-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:w-[calc(50%-0.75rem)]"
+                    }
                   >
                     <div className="flex flex-wrap items-start justify-between gap-4">
                       <div className="flex min-w-0 items-center gap-4">
@@ -366,17 +464,25 @@ export default function TecnologiasAdminPage() {
                         </div>
                       </div>
 
-                      <span
-                        className={
-                          tecnologia.publicado
-                            ? "rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800"
-                            : "rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800"
-                        }
-                      >
-                        {tecnologia.publicado
-                          ? "Publicada"
-                          : "Borrador"}
-                      </span>
+                      <div className="flex flex-wrap gap-2">
+                        <span
+                          className={
+                            tecnologia.publicado
+                              ? "rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800"
+                              : "rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800"
+                          }
+                        >
+                          {tecnologia.publicado
+                            ? "Publicada"
+                            : "Borrador"}
+                        </span>
+
+                        {editando && (
+                          <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-800">
+                            En edición
+                          </span>
+                        )}
+                      </div>
                     </div>
 
 
@@ -458,6 +564,17 @@ export default function TecnologiasAdminPage() {
 
 
                     <div className="mt-auto flex flex-wrap gap-3 pt-7">
+                      <button
+                        type="button"
+                        disabled={procesando}
+                        onClick={() =>
+                          iniciarEdicion(tecnologia)
+                        }
+                        className="rounded-lg border border-blue-300 px-4 py-2.5 text-sm font-semibold text-blue-700 transition hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-60"
+                      >
+                        {editando ? "Editando" : "Editar"}
+                      </button>
+
                       <button
                         type="button"
                         disabled={procesando}
