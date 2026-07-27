@@ -1,64 +1,23 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+
+import { useMusica } from "@/components/audio/MusicaProvider";
+
 
 export default function ReproductorMusica() {
   const t = useTranslations("Reproductor");
-  const audioRef = useRef<HTMLAudioElement>(null);
 
-  const [reproduciendo, setReproduciendo] =
-    useState(false);
+  const {
+    reproduciendo,
+    silenciado,
+    alternarReproduccion,
+    alternarSilencio,
+  } = useMusica();
 
-  const [silenciado, setSilenciado] =
-    useState(false);
-
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = 0.25;
-    }
-  }, []);
-
-  async function alternarReproduccion() {
-    const audio = audioRef.current;
-
-    if (!audio) {
-      return;
-    }
-
-    try {
-      if (audio.paused) {
-        await audio.play();
-        setReproduciendo(true);
-      } else {
-        audio.pause();
-        setReproduciendo(false);
-      }
-    } catch (error) {
-      console.error(t("errorReproduccion"), error);
-    }
-  }
-
-  function alternarSilencio() {
-    const audio = audioRef.current;
-
-    if (!audio) {
-      return;
-    }
-
-    audio.muted = !audio.muted;
-    setSilenciado(audio.muted);
-  }
 
   return (
     <div className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full border border-slate-700 bg-slate-950/90 p-2 text-white shadow-xl backdrop-blur">
-      <audio
-        ref={audioRef}
-        src="/audio/musica-fondo.mp3"
-        loop
-        preload="metadata"
-      />
-
       <button
         type="button"
         onClick={alternarReproduccion}
@@ -67,6 +26,7 @@ export default function ReproductorMusica() {
             ? t("pausar")
             : t("reproducir")
         }
+        aria-pressed={reproduciendo}
         className="flex h-11 w-11 items-center justify-center rounded-full bg-blue-600 transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
       >
         {reproduciendo ? (
@@ -76,8 +36,21 @@ export default function ReproductorMusica() {
             fill="currentColor"
             className="h-5 w-5"
           >
-            <rect x="6" y="5" width="4" height="14" rx="1" />
-            <rect x="14" y="5" width="4" height="14" rx="1" />
+            <rect
+              x="6"
+              y="5"
+              width="4"
+              height="14"
+              rx="1"
+            />
+
+            <rect
+              x="14"
+              y="5"
+              width="4"
+              height="14"
+              rx="1"
+            />
           </svg>
         ) : (
           <svg
@@ -91,6 +64,7 @@ export default function ReproductorMusica() {
         )}
       </button>
 
+
       <button
         type="button"
         onClick={alternarSilencio}
@@ -99,6 +73,7 @@ export default function ReproductorMusica() {
             ? t("activarSonido")
             : t("silenciar")
         }
+        aria-pressed={silenciado}
         className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-700 text-slate-300 transition hover:border-blue-500 hover:text-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
       >
         {silenciado ? (

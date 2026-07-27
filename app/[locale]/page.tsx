@@ -10,22 +10,20 @@ import TecnologiasSection from "@/components/public/TecnologiasSection";
 
 export default function HomePage() {
   return (
-    <>
-      <HeaderPublico />
+<>
+  <HeaderPublico />
 
-      <main>
+  <main>
+    <Hero />
+    <ServiciosSection />
+    <ProyectosSection />
+    <TecnologiasSection />
+    <CertificacionesSection />
+    <ContactoSection />
+  </main>
 
-      <Hero />
-      <ServiciosSection />
-      <ProyectosSection />
-      <TecnologiasSection />
-      <CertificacionesSection />
-      <ContactoSection />
-    
-      </main>
-
-      <FooterPublico />
-      <ReproductorMusica />
-    </>
+  <FooterPublico />
+  <ReproductorMusica />
+</>
   );
 }
