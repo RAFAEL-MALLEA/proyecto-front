@@ -16,6 +16,10 @@ const enlaces = [
     href: "/admin/servicios",
     nombre: "Servicios",
   },
+    {
+    href: "/admin/proyectos",
+    nombre: "Proyectos",
+  },
 ];
 
 export default function Sidebar() {
