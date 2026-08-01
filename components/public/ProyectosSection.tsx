@@ -15,6 +15,15 @@ interface ImagenProyectoProps {
   esFondo?: boolean;
 }
 
+type PosicionCarrusel =
+  | "fuera-izquierda"
+  | "izquierda"
+  | "centro"
+  | "derecha"
+  | "fuera-derecha";
+
+type DireccionCarrusel = "anterior" | "siguiente";
+
 const duracionTransicion = 680;
 
 function ImagenProyecto({
@@ -48,7 +57,7 @@ function ImagenProyecto({
         onError={() => setImagenConError(true)}
         className={
           esFondo
-            ? "h-full w-full object-cover brightness-[0.45] saturate-50"
+            ? "h-full w-full object-cover brightness-[0.42] saturate-50"
             : "h-full w-full object-cover transition duration-700 group-hover:scale-[1.025]"
         }
       />
@@ -74,43 +83,154 @@ function obtenerMensajeError(
     : mensajePredeterminado;
 }
 
+function normalizarIndice(
+  indice: number,
+  total: number
+): number {
+  return ((indice % total) + total) % total;
+}
+
+function obtenerPosicionProyecto(
+  indiceProyecto: number,
+  indiceActivo: number,
+  indiceDestino: number | null,
+  direccion: DireccionCarrusel | null,
+  total: number
+): PosicionCarrusel {
+  if (total <= 1) {
+    return "centro";
+  }
+
+  if (indiceDestino !== null && direccion) {
+    if (indiceProyecto === indiceActivo) {
+      return direccion === "siguiente"
+        ? "izquierda"
+        : "derecha";
+    }
+
+    if (indiceProyecto === indiceDestino) {
+      return "centro";
+    }
+
+    if (direccion === "siguiente") {
+      const indiceAnterior = normalizarIndice(
+        indiceActivo - 1,
+        total
+      );
+      const nuevoIndiceDerecho = normalizarIndice(
+        indiceDestino + 1,
+        total
+      );
+
+      // Con tres proyectos, ambos índices pertenecen a la misma tarjeta.
+      // Se oculta por la izquierda y reaparece después a la derecha.
+      if (indiceProyecto === indiceAnterior) {
+        return "fuera-izquierda";
+      }
+
+      if (indiceProyecto === nuevoIndiceDerecho) {
+        return "derecha";
+      }
+    } else {
+      const indiceSiguiente = normalizarIndice(
+        indiceActivo + 1,
+        total
+      );
+      const nuevoIndiceIzquierdo = normalizarIndice(
+        indiceDestino - 1,
+        total
+      );
+
+      // Con tres proyectos, ambos índices pertenecen a la misma tarjeta.
+      // Se oculta por la derecha y reaparece después a la izquierda.
+      if (indiceProyecto === indiceSiguiente) {
+        return "fuera-derecha";
+      }
+
+      if (indiceProyecto === nuevoIndiceIzquierdo) {
+        return "izquierda";
+      }
+    }
+
+    const distanciaAdelante = normalizarIndice(
+      indiceProyecto - indiceDestino,
+      total
+    );
+    const distanciaAtras = normalizarIndice(
+      indiceDestino - indiceProyecto,
+      total
+    );
+
+    return distanciaAtras < distanciaAdelante
+      ? "fuera-izquierda"
+      : "fuera-derecha";
+  }
+
+  if (indiceProyecto === indiceActivo) {
+    return "centro";
+  }
+
+  if (total === 2) {
+    return "derecha";
+  }
+
+  const indiceIzquierdo = normalizarIndice(
+    indiceActivo - 1,
+    total
+  );
+  const indiceDerecho = normalizarIndice(
+    indiceActivo + 1,
+    total
+  );
+
+  if (indiceProyecto === indiceIzquierdo) {
+    return "izquierda";
+  }
+
+  if (indiceProyecto === indiceDerecho) {
+    return "derecha";
+  }
+
+  const distanciaAdelante = normalizarIndice(
+    indiceProyecto - indiceActivo,
+    total
+  );
+  const distanciaAtras = normalizarIndice(
+    indiceActivo - indiceProyecto,
+    total
+  );
+
+  return distanciaAtras < distanciaAdelante
+    ? "fuera-izquierda"
+    : "fuera-derecha";
+}
+
 function obtenerClasePosicion(
-  posicion: number,
-  animando: boolean
+  posicion: PosicionCarrusel,
+  reorganizando: boolean,
+  direccion: DireccionCarrusel | null
 ): string {
-  if (animando) {
-    if (posicion === 0) {
-      return "z-40 -translate-x-[115%] -rotate-2 scale-[0.96] opacity-0";
-    }
-
-    if (posicion === 1) {
-      return "z-30 translate-x-0 scale-100 opacity-100";
-    }
-
-    if (posicion === 2) {
-      return "z-20 translate-x-[9%] scale-[0.94] opacity-70 sm:translate-x-[12%]";
-    }
-
-    if (posicion === 3) {
-      return "z-10 translate-x-[17%] scale-[0.88] opacity-35 sm:translate-x-[22%]";
-    }
-
-    return "pointer-events-none z-0 translate-x-[24%] scale-[0.82] opacity-0";
+  if (posicion === "fuera-izquierda") {
+    return "pointer-events-none z-0 -translate-x-[78%] scale-[0.76] opacity-0";
   }
 
-  if (posicion === 0) {
-    return "z-30 translate-x-0 scale-100 opacity-100";
+  if (posicion === "izquierda") {
+    return reorganizando && direccion === "anterior"
+      ? "z-20 -translate-x-[42%] scale-[0.86] opacity-0 sm:-translate-x-[38%]"
+      : "z-20 -translate-x-[42%] scale-[0.86] opacity-45 sm:-translate-x-[38%]";
   }
 
-  if (posicion === 1) {
-    return "z-20 translate-x-[9%] scale-[0.94] opacity-70 sm:translate-x-[12%]";
+  if (posicion === "centro") {
+    return "z-40 translate-x-0 scale-100 opacity-100";
   }
 
-  if (posicion === 2) {
-    return "z-10 translate-x-[17%] scale-[0.88] opacity-35 sm:translate-x-[22%]";
+  if (posicion === "derecha") {
+    return reorganizando && direccion === "siguiente"
+      ? "z-30 translate-x-[42%] scale-[0.88] opacity-0 sm:translate-x-[38%]"
+      : "z-30 translate-x-[42%] scale-[0.88] opacity-65 sm:translate-x-[38%]";
   }
 
-  return "pointer-events-none z-0 translate-x-[24%] scale-[0.82] opacity-0";
+  return "pointer-events-none z-0 translate-x-[78%] scale-[0.76] opacity-0";
 }
 
 export default function ProyectosSection() {
@@ -119,16 +239,22 @@ export default function ProyectosSection() {
   const [proyectos, setProyectos] = useState<
     Proyecto[]
   >([]);
-  const [ordenProyectos, setOrdenProyectos] =
-    useState<number[]>([]);
+  const [indiceActivo, setIndiceActivo] =
+    useState(0);
+  const [indiceDestino, setIndiceDestino] =
+    useState<number | null>(null);
+  const [direccion, setDireccion] =
+    useState<DireccionCarrusel | null>(null);
+  const [reorganizando, setReorganizando] =
+    useState(false);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<
     string | null
   >(null);
-  const [animando, setAnimando] =
-    useState(false);
   const [reducirMovimiento, setReducirMovimiento] =
     useState(false);
+
+  const animando = indiceDestino !== null;
 
   useEffect(() => {
     let componenteActivo = true;
@@ -143,11 +269,10 @@ export default function ProyectosSection() {
 
         if (componenteActivo) {
           setProyectos(proyectosRecibidos);
-          setOrdenProyectos(
-            proyectosRecibidos.map(
-              (_, indice) => indice
-            )
-          );
+          setIndiceActivo(0);
+          setIndiceDestino(null);
+          setDireccion(null);
+          setReorganizando(false);
         }
       } catch (errorDesconocido) {
         if (!componenteActivo) {
@@ -200,58 +325,95 @@ export default function ProyectosSection() {
   }, []);
 
   useEffect(() => {
-    if (!animando) {
+    if (indiceDestino === null) {
       return;
     }
 
-    const temporizador = window.setTimeout(() => {
-      setOrdenProyectos((ordenActual) => {
-        if (ordenActual.length <= 1) {
-          return ordenActual;
-        }
+    const destinoActual = indiceDestino;
 
-        return [
-          ...ordenActual.slice(1),
-          ordenActual[0],
-        ];
-      });
-      setAnimando(false);
+    const temporizador = window.setTimeout(() => {
+      setIndiceActivo(destinoActual);
+      setIndiceDestino(null);
+      setReorganizando(true);
     }, duracionTransicion);
 
     return () => {
       window.clearTimeout(temporizador);
     };
-  }, [animando]);
+  }, [indiceDestino]);
 
-  function mostrarSiguienteProyecto() {
+  useEffect(() => {
+    if (!reorganizando) {
+      return;
+    }
+
+    let segundoFrame = 0;
+
+    const primerFrame = window.requestAnimationFrame(
+      () => {
+        segundoFrame = window.requestAnimationFrame(
+          () => {
+            setReorganizando(false);
+            setDireccion(null);
+          }
+        );
+      }
+    );
+
+    return () => {
+      window.cancelAnimationFrame(primerFrame);
+
+      if (segundoFrame !== 0) {
+        window.cancelAnimationFrame(segundoFrame);
+      }
+    };
+  }, [reorganizando]);
+
+  function cambiarProyecto(
+    nuevaDireccion: DireccionCarrusel
+  ) {
     if (
       animando ||
-      ordenProyectos.length <= 1
+      reorganizando ||
+      proyectos.length <= 1
     ) {
       return;
     }
 
+    const desplazamiento =
+      nuevaDireccion === "siguiente" ? 1 : -1;
+    const nuevoIndice = normalizarIndice(
+      indiceActivo + desplazamiento,
+      proyectos.length
+    );
+
+    setDireccion(nuevaDireccion);
+
     if (reducirMovimiento) {
-      setOrdenProyectos((ordenActual) => [
-        ...ordenActual.slice(1),
-        ordenActual[0],
-      ]);
+      setIndiceActivo(nuevoIndice);
+      setReorganizando(true);
       return;
     }
 
-    setAnimando(true);
+    setIndiceDestino(nuevoIndice);
   }
 
-  const indiceActivo = ordenProyectos[0];
-  const proyectoActivo =
-    indiceActivo === undefined
-      ? undefined
-      : proyectos[indiceActivo];
+  function mostrarSiguienteProyecto() {
+    cambiarProyecto("siguiente");
+  }
+
+  function mostrarProyectoAnterior() {
+    cambiarProyecto("anterior");
+  }
+
+  const indiceVisual =
+    indiceDestino ?? indiceActivo;
+  const proyectoActivo = proyectos[indiceVisual];
 
   return (
     <section
       id="proyectos"
-      aria-busy={animando || cargando}
+      aria-busy={animando || reorganizando || cargando}
       className="relative h-full w-full overflow-hidden bg-slate-950 px-4 pb-5 pt-24 text-white sm:px-6 lg:px-10"
     >
       <div
@@ -263,7 +425,7 @@ export default function ProyectosSection() {
         className="pointer-events-none absolute -right-32 bottom-4 h-96 w-96 rounded-full bg-cyan-500/10 blur-3xl"
       />
 
-      <div className="relative mx-auto flex h-full w-full max-w-7xl items-center">
+      <div className="relative mx-auto flex h-full w-full max-w-7xl items-center justify-center">
         {cargando && (
           <div className="w-full">
             <EstadoCarga mensaje={t("cargando")} />
@@ -293,13 +455,22 @@ export default function ProyectosSection() {
           !error &&
           proyectoActivo && (
             <div className="relative h-[min(620px,calc(100vh-7rem))] w-full">
-              {ordenProyectos.map(
-                (indiceProyecto, posicion) => {
-                  const proyecto =
-                    proyectos[indiceProyecto];
-                  const esActivo = posicion === 0;
-                  const esSiguiente =
-                    posicion === 1;
+              {proyectos.map(
+                (proyecto, indiceProyecto) => {
+                  const posicion =
+                    obtenerPosicionProyecto(
+                      indiceProyecto,
+                      indiceActivo,
+                      indiceDestino,
+                      direccion,
+                      proyectos.length
+                    );
+                  const esCentro =
+                    posicion === "centro";
+                  const esDerecha =
+                    posicion === "derecha";
+                  const esIzquierda =
+                    posicion === "izquierda";
                   const tecnologias =
                     separarTecnologias(
                       proyecto.tecnologias
@@ -307,13 +478,23 @@ export default function ProyectosSection() {
 
                   return (
                     <div
-                      key={proyecto.id}
-                      className="pointer-events-none absolute inset-0 flex items-center"
+                      key={
+                        proyecto.id ?? indiceProyecto
+                      }
+                      className="pointer-events-none absolute inset-0 flex items-center justify-center"
                     >
                       <div
-                        className={`relative w-[94%] transform-gpu transition-[transform,opacity] duration-[680ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform sm:w-[90%] ${obtenerClasePosicion(posicion, animando)}`}
+                        className={`relative w-[88%] transform-gpu will-change-transform sm:w-[80%] lg:w-[72%] ${
+                          reorganizando
+                            ? "transition-none"
+                            : "transition-[transform,opacity] duration-[680ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+                        } ${obtenerClasePosicion(
+                          posicion,
+                          reorganizando,
+                          direccion
+                        )}`}
                       >
-                        {esActivo ? (
+                        {esCentro ? (
                           <article
                             aria-live="polite"
                             className="group flex max-h-[min(620px,calc(100vh-7rem))] min-h-[420px] w-full min-w-0 flex-col overflow-hidden rounded-3xl border border-slate-700 bg-slate-900/95 shadow-2xl shadow-black/40 backdrop-blur lg:flex-row"
@@ -415,7 +596,7 @@ export default function ProyectosSection() {
 
                                 <p className="ml-auto font-mono text-sm text-slate-400">
                                   <span className="text-xl font-bold text-blue-300">
-                                    {indiceProyecto + 1}
+                                    {indiceVisual + 1}
                                   </span>{" "}
                                   / {proyectos.length}
                                 </p>
@@ -426,29 +607,37 @@ export default function ProyectosSection() {
                           <button
                             type="button"
                             onClick={
-                              esSiguiente
+                              esDerecha
                                 ? mostrarSiguienteProyecto
-                                : undefined
+                                : esIzquierda
+                                  ? mostrarProyectoAnterior
+                                  : undefined
                             }
                             disabled={
-                              !esSiguiente || animando
+                              (!esDerecha && !esIzquierda) ||
+                              animando ||
+                              reorganizando
                             }
                             aria-label={
-                              esSiguiente
+                              esDerecha
                                 ? `${t("etiqueta")}: ${proyecto.titulo}`
-                                : undefined
+                                : esIzquierda
+                                  ? `${t("etiqueta")}: ${proyecto.titulo}`
+                                  : undefined
                             }
                             aria-hidden={
-                              esSiguiente
+                              esDerecha || esIzquierda
                                 ? undefined
                                 : true
                             }
                             tabIndex={
-                              esSiguiente ? 0 : -1
+                              esDerecha || esIzquierda
+                                ? 0
+                                : -1
                             }
-                            className={`pointer-events-auto flex min-h-[420px] w-full overflow-hidden rounded-3xl border border-slate-700 bg-slate-900 text-left shadow-2xl shadow-black/30 transition hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400 ${
-                              esSiguiente
-                                ? "cursor-pointer"
+                            className={`pointer-events-auto flex min-h-[420px] w-full overflow-hidden rounded-3xl border border-slate-700 bg-slate-900 text-left shadow-2xl shadow-black/30 transition focus:outline-none focus:ring-2 focus:ring-blue-400 ${
+                              esDerecha || esIzquierda
+                                ? "cursor-pointer hover:border-blue-400 hover:brightness-110"
                                 : "cursor-default"
                             }`}
                           >
@@ -460,9 +649,21 @@ export default function ProyectosSection() {
                                 esFondo
                               />
 
-                              <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/55 to-slate-950/20" />
+                              <div
+                                className={`absolute inset-0 ${
+                                  esIzquierda
+                                    ? "bg-gradient-to-l from-slate-950/90 via-slate-950/60 to-slate-950/20"
+                                    : "bg-gradient-to-r from-slate-950/90 via-slate-950/60 to-slate-950/20"
+                                }`}
+                              />
 
-                              <div className="absolute inset-y-0 right-0 flex w-[28%] min-w-28 flex-col items-center justify-center px-3 text-center">
+                              <div
+                                className={`absolute inset-y-0 flex w-[34%] min-w-32 flex-col items-center justify-center px-3 text-center ${
+                                  esIzquierda
+                                    ? "right-0"
+                                    : "left-0"
+                                }`}
+                              >
                                 <span className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-300/80">
                                   {proyecto.destacado
                                     ? t("destacado")
