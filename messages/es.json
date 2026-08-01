@@ -105,7 +105,12 @@
     "tecnologias": "Tecnologías",
     "demostracion": "Ver demostración",
     "repositorio": "Ver repositorio",
-    "vistaPrevia": "Vista previa del proyecto {titulo}"
+    "vistaPrevia": "Vista previa del proyecto {titulo}",
+    "informacion": "INFO",
+    "abrirInformacion": "Ver información de {titulo}",
+    "cerrarInformacion": "Cerrar información del proyecto",
+    "detallesProyecto": "Detalles del proyecto",
+    "descripcionProyecto": "Descripción"
   },
   "Tecnologias": {
     "etiqueta": "Tecnologías",

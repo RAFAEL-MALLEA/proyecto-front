@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 
 import EstadoCarga from "@/components/public/EstadoCarga";
@@ -25,6 +25,7 @@ type PosicionCarrusel =
 type DireccionCarrusel = "anterior" | "siguiente";
 
 const duracionTransicion = 680;
+const duracionModal = 260;
 
 function ImagenProyecto({
   imagen,
@@ -253,8 +254,68 @@ export default function ProyectosSection() {
   >(null);
   const [reducirMovimiento, setReducirMovimiento] =
     useState(false);
+  const [proyectoInformacion, setProyectoInformacion] =
+    useState<Proyecto | null>(null);
+  const [modalVisible, setModalVisible] =
+    useState(false);
+
+  const botonCerrarModalRef =
+    useRef<HTMLButtonElement>(null);
+  const elementoConFocoAnteriorRef =
+    useRef<HTMLElement | null>(null);
+  const temporizadorModalRef =
+    useRef<number | null>(null);
 
   const animando = indiceDestino !== null;
+
+  const finalizarCierreModal = useCallback(() => {
+    setProyectoInformacion(null);
+
+    window.requestAnimationFrame(() => {
+      elementoConFocoAnteriorRef.current?.focus();
+      elementoConFocoAnteriorRef.current = null;
+    });
+  }, []);
+
+  const cerrarInformacionProyecto = useCallback(() => {
+    setModalVisible(false);
+
+    if (temporizadorModalRef.current !== null) {
+      window.clearTimeout(temporizadorModalRef.current);
+      temporizadorModalRef.current = null;
+    }
+
+    if (reducirMovimiento) {
+      finalizarCierreModal();
+      return;
+    }
+
+    temporizadorModalRef.current = window.setTimeout(
+      finalizarCierreModal,
+      duracionModal
+    );
+  }, [finalizarCierreModal, reducirMovimiento]);
+
+  function abrirInformacionProyecto(
+    proyecto: Proyecto
+  ) {
+    if (animando || reorganizando) {
+      return;
+    }
+
+    if (temporizadorModalRef.current !== null) {
+      window.clearTimeout(temporizadorModalRef.current);
+      temporizadorModalRef.current = null;
+    }
+
+    elementoConFocoAnteriorRef.current =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+
+    setModalVisible(false);
+    setProyectoInformacion(proyecto);
+  }
 
   useEffect(() => {
     let componenteActivo = true;
@@ -321,6 +382,66 @@ export default function ProyectosSection() {
         "change",
         sincronizarPreferencia
       );
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!proyectoInformacion) {
+      return;
+    }
+
+    const overflowAnterior = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    let segundoFrame = 0;
+
+    const primerFrame = window.requestAnimationFrame(() => {
+      if (reducirMovimiento) {
+        setModalVisible(true);
+        botonCerrarModalRef.current?.focus();
+        return;
+      }
+
+      segundoFrame = window.requestAnimationFrame(() => {
+        setModalVisible(true);
+        botonCerrarModalRef.current?.focus();
+      });
+    });
+
+    function manejarTeclado(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        cerrarInformacionProyecto();
+      }
+    }
+
+    window.addEventListener("keydown", manejarTeclado);
+
+    return () => {
+      window.cancelAnimationFrame(primerFrame);
+
+      if (segundoFrame !== 0) {
+        window.cancelAnimationFrame(segundoFrame);
+      }
+
+      window.removeEventListener(
+        "keydown",
+        manejarTeclado
+      );
+      document.body.style.overflow = overflowAnterior;
+    };
+  }, [
+    cerrarInformacionProyecto,
+    proyectoInformacion,
+    reducirMovimiento,
+  ]);
+
+  useEffect(() => {
+    return () => {
+      if (temporizadorModalRef.current !== null) {
+        window.clearTimeout(
+          temporizadorModalRef.current
+        );
+      }
     };
   }, []);
 
@@ -411,8 +532,9 @@ export default function ProyectosSection() {
   const proyectoActivo = proyectos[indiceVisual];
 
   return (
-    <section
-      id="proyectos"
+    <>
+      <section
+        id="proyectos"
       aria-busy={animando || reorganizando || cargando}
       className="relative h-full w-full overflow-hidden bg-slate-950 px-4 pb-5 pt-24 text-white sm:px-6 lg:px-10"
     >
@@ -555,44 +677,43 @@ export default function ProyectosSection() {
                               )}
 
                               <div className="mt-6 flex flex-wrap items-end justify-between gap-5">
-                                {(proyecto.url_repositorio ||
-                                  proyecto.url_demo) && (
-                                  <div className="flex flex-wrap gap-3">
-                                    {proyecto.url_demo && (
-                                      <a
-                                        href={
-                                          proyecto.url_demo
-                                        }
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className="pointer-events-auto inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                      >
-                                        {t(
-                                          "demostracion"
-                                        )}
-                                        <span aria-hidden="true">
-                                          ↗
-                                        </span>
-                                      </a>
-                                    )}
+                                <div className="flex flex-wrap gap-3">
+                                  {proyecto.url_demo && (
+                                    <a
+                                      href={proyecto.url_demo}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="pointer-events-auto inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    >
+                                      {t("demostracion")}
+                                      <span aria-hidden="true">
+                                        ↗
+                                      </span>
+                                    </a>
+                                  )}
 
-                                    {proyecto.url_repositorio && (
-                                      <a
-                                        href={
-                                          proyecto.url_repositorio
-                                        }
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className="pointer-events-auto inline-flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-2.5 text-sm font-semibold text-slate-200 transition hover:border-blue-400 hover:text-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                      >
-                                        {t("repositorio")}
-                                        <span aria-hidden="true">
-                                          ↗
-                                        </span>
-                                      </a>
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      abrirInformacionProyecto(
+                                        proyecto
+                                      )
+                                    }
+                                    aria-label={t(
+                                      "abrirInformacion",
+                                      {
+                                        titulo:
+                                          proyecto.titulo,
+                                      }
                                     )}
-                                  </div>
-                                )}
+                                    className="pointer-events-auto inline-flex items-center gap-2 rounded-lg border border-blue-400/70 bg-blue-500/10 px-4 py-2.5 text-sm font-semibold text-blue-200 transition hover:border-blue-300 hover:bg-blue-500/20 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                  >
+                                    {t("informacion")}
+                                    <span aria-hidden="true">
+                                      +
+                                    </span>
+                                  </button>
+                                </div>
 
                                 <p className="ml-auto font-mono text-sm text-slate-400">
                                   <span className="text-xl font-bold text-blue-300">
@@ -684,6 +805,149 @@ export default function ProyectosSection() {
             </div>
           )}
       </div>
-    </section>
+      </section>
+
+      {proyectoInformacion && (
+        <div
+          className={`fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/85 px-4 py-6 backdrop-blur-md transition-opacity duration-[260ms] ${
+            modalVisible
+              ? "opacity-100"
+              : "opacity-0"
+          }`}
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              cerrarInformacionProyecto();
+            }
+          }}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={`informacion-proyecto-${
+              proyectoInformacion.id ?? "actual"
+            }`}
+            className={`relative flex max-h-[calc(100vh-3rem)] w-full max-w-5xl flex-col overflow-hidden rounded-3xl border border-blue-400/30 bg-slate-900 shadow-2xl shadow-black/60 transition-[opacity,transform] duration-[260ms] ease-[cubic-bezier(0.16,1,0.3,1)] lg:flex-row ${
+              modalVisible
+                ? "translate-y-0 scale-100 opacity-100"
+                : "translate-y-6 scale-[0.97] opacity-0"
+            }`}
+          >
+            <button
+              ref={botonCerrarModalRef}
+              type="button"
+              onClick={cerrarInformacionProyecto}
+              aria-label={t("cerrarInformacion")}
+              className="absolute right-4 top-4 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-slate-600 bg-slate-950/80 text-slate-200 backdrop-blur transition hover:border-blue-400 hover:bg-blue-500/15 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                fill="none"
+                className="h-5 w-5"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              >
+                <path d="M6 6l12 12" />
+                <path d="M18 6 6 18" />
+              </svg>
+            </button>
+
+            <div className="relative h-52 w-full shrink-0 overflow-hidden sm:h-64 lg:h-auto lg:w-[48%]">
+              <ImagenProyecto
+                imagen={proyectoInformacion.imagen}
+                titulo={proyectoInformacion.titulo}
+                textoAlternativo={t("vistaPrevia", {
+                  titulo: proyectoInformacion.titulo,
+                })}
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-slate-950/20 lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-slate-900" />
+            </div>
+
+            <div className="flex min-w-0 flex-1 flex-col overflow-y-auto p-6 sm:p-8 lg:p-10">
+              <div className="flex items-center gap-3 pr-14">
+                <span className="text-xs font-semibold uppercase tracking-[0.28em] text-blue-400">
+                  {proyectoInformacion.destacado
+                    ? t("destacado")
+                    : t("detallesProyecto")}
+                </span>
+                <span className="h-px flex-1 bg-slate-700" />
+              </div>
+
+              <h2
+                id={`informacion-proyecto-${
+                  proyectoInformacion.id ?? "actual"
+                }`}
+                className="mt-5 text-3xl font-bold leading-tight text-white sm:text-4xl"
+              >
+                {proyectoInformacion.titulo}
+              </h2>
+
+              <div className="mt-7">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                  {t("descripcionProyecto")}
+                </p>
+                <p className="mt-3 whitespace-pre-line text-sm leading-7 text-slate-300 sm:text-base">
+                  {proyectoInformacion.descripcion}
+                </p>
+              </div>
+
+              {separarTecnologias(
+                proyectoInformacion.tecnologias
+              ).length > 0 && (
+                <div className="mt-7">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                    {t("tecnologias")}
+                  </p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {separarTecnologias(
+                      proyectoInformacion.tecnologias
+                    ).map((tecnologia) => (
+                      <span
+                        key={tecnologia}
+                        className="rounded-full border border-slate-700 bg-slate-950/70 px-3 py-1.5 text-xs font-semibold text-slate-300"
+                      >
+                        {tecnologia}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {(proyectoInformacion.url_demo ||
+                proyectoInformacion.url_repositorio) && (
+                <div className="mt-8 flex flex-wrap gap-3 border-t border-slate-800 pt-6">
+                  {proyectoInformacion.url_demo && (
+                    <a
+                      href={proyectoInformacion.url_demo}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    >
+                      {t("demostracion")}
+                      <span aria-hidden="true">↗</span>
+                    </a>
+                  )}
+
+                  {proyectoInformacion.url_repositorio && (
+                    <a
+                      href={
+                        proyectoInformacion.url_repositorio
+                      }
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 rounded-lg border border-slate-600 bg-slate-950/60 px-4 py-2.5 text-sm font-semibold text-slate-200 transition hover:border-blue-400 hover:text-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    >
+                      {t("repositorio")}
+                      <span aria-hidden="true">↗</span>
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
