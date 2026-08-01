@@ -27,7 +27,8 @@
     "perfilCodigo": "perfil_profesional",
     "tarjetaTitulo": "Desarrollo web y soporte tecnológico",
     "tarjetaDescripcion": "Experiencia trabajando con frontend, backend, bases de datos, soporte TI y administración de sistemas.",
-    "tecnologias": "Tecnologías principales"
+    "tecnologias": "Tecnologías principales",
+    "verProyectos": "Ver mis proyectos"
   },
   "Servicios": {
     "etiqueta": "Servicios",
@@ -82,7 +83,8 @@
     "verLinkedin": "Ver perfil de LinkedIn",
     "derechos": "© {anio} Rafael Alejandro Mallea Ramírez. Todos los derechos reservados.",
     "desarrollado": "Desarrollado con Next.js, TypeScript y Tailwind CSS.",
-    "tecnologias": "Tecnologías"
+    "tecnologias": "Tecnologías",
+    "experiencia": "Experiencia"
   },
   "Reproductor": {
     "reproducir": "Reproducir música",

@@ -12,12 +12,12 @@ export default function FooterPublico() {
       href: "#inicio",
     },
     {
-      nombre: t("servicios"),
-      href: "#servicios",
-    },
-    {
       nombre: t("proyectos"),
       href: "#proyectos",
+    },
+    {
+      nombre: t("experiencia"),
+      href: "#experiencia",
     },
     {
       nombre: t("tecnologias"),

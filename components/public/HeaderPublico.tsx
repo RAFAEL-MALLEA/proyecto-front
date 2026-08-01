@@ -2,43 +2,154 @@
 
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import SelectorIdioma from "@/components/public/SelectorIdioma";
 
+const idsSecciones = [
+  "inicio",
+  "proyectos",
+  "experiencia",
+  "tecnologias",
+  "certificaciones",
+  "contacto",
+] as const;
+
+type SeccionId = (typeof idsSecciones)[number];
+
+function esSeccionId(valor: string): valor is SeccionId {
+  return idsSecciones.includes(valor as SeccionId);
+}
+
 export default function HeaderPublico() {
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const [seccionActiva, setSeccionActiva] =
+    useState<SeccionId>("inicio");
+
   const t = useTranslations("Header");
 
   const enlacesNavegacion = [
     {
+      id: "inicio" as const,
       nombre: t("inicio"),
-      href: "#inicio",
     },
     {
+      id: "proyectos" as const,
       nombre: t("proyectos"),
-      href: "#proyectos",
     },
     {
+      id: "experiencia" as const,
       nombre: t("experiencia"),
-      href: "#experiencia",
     },
     {
+      id: "tecnologias" as const,
       nombre: t("tecnologias"),
-      href: "#tecnologias",
     },
     {
+      id: "certificaciones" as const,
       nombre: t("certificaciones"),
-      href: "#certificaciones",
     },
     {
+      id: "contacto" as const,
       nombre: t("contacto"),
-      href: "#contacto",
     },
   ];
 
+  useEffect(() => {
+    const visibilidadSecciones = new Map<
+      SeccionId,
+      number
+    >();
+
+    function actualizarDesdeHash() {
+      const idHash = window.location.hash.replace(
+        "#",
+        ""
+      );
+
+      if (esSeccionId(idHash)) {
+        setSeccionActiva(idHash);
+      }
+    }
+
+    actualizarDesdeHash();
+
+    const elementos = idsSecciones
+      .map((id) => document.getElementById(id))
+      .filter(
+        (elemento): elemento is HTMLElement =>
+          elemento !== null
+      );
+
+    const observer = new IntersectionObserver(
+      (entradas) => {
+        entradas.forEach((entrada) => {
+          const id = entrada.target.id;
+
+          if (!esSeccionId(id)) {
+            return;
+          }
+
+          visibilidadSecciones.set(
+            id,
+            entrada.isIntersecting
+              ? entrada.intersectionRatio
+              : 0
+          );
+        });
+
+        const [mejorSeccion] = idsSecciones
+          .map((id) => ({
+            id,
+            proporcionVisible:
+              visibilidadSecciones.get(id) ?? 0,
+          }))
+          .sort(
+            (seccionA, seccionB) =>
+              seccionB.proporcionVisible -
+              seccionA.proporcionVisible
+          );
+
+        if (
+          mejorSeccion &&
+          mejorSeccion.proporcionVisible >= 0.12
+        ) {
+          setSeccionActiva(mejorSeccion.id);
+        }
+      },
+      {
+        root: null,
+        rootMargin: "-80px 0px 0px 0px",
+        threshold: [0, 0.12, 0.25, 0.4, 0.6, 0.8],
+      }
+    );
+
+    elementos.forEach((elemento) => {
+      observer.observe(elemento);
+    });
+
+    window.addEventListener(
+      "hashchange",
+      actualizarDesdeHash
+    );
+
+    return () => {
+      observer.disconnect();
+
+      window.removeEventListener(
+        "hashchange",
+        actualizarDesdeHash
+      );
+    };
+  }, []);
+
   function cerrarMenu() {
     setMenuAbierto(false);
+  }
+
+  function manejarNavegacion(id: SeccionId) {
+    setSeccionActiva(id);
+    cerrarMenu();
   }
 
   return (
@@ -46,7 +157,7 @@ export default function HeaderPublico() {
       <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-6">
         <a
           href="#inicio"
-          onClick={cerrarMenu}
+          onClick={() => manejarNavegacion("inicio")}
           className="text-xl font-bold tracking-tight"
         >
           Rafael
@@ -57,15 +168,30 @@ export default function HeaderPublico() {
           aria-label={t("navegacionPrincipal")}
           className="hidden items-center gap-6 md:flex"
         >
-          {enlacesNavegacion.map((enlace) => (
-            <a
-              key={enlace.href}
-              href={enlace.href}
-              className="text-sm font-medium text-slate-300 transition hover:text-blue-400"
-            >
-              {enlace.nombre}
-            </a>
-          ))}
+          {enlacesNavegacion.map((enlace) => {
+            const activo =
+              seccionActiva === enlace.id;
+
+            return (
+              <a
+                key={enlace.id}
+                href={`#${enlace.id}`}
+                onClick={() =>
+                  manejarNavegacion(enlace.id)
+                }
+                aria-current={
+                  activo ? "location" : undefined
+                }
+                className={
+                  activo
+                    ? "relative py-2 text-sm font-semibold text-white after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:rounded-full after:bg-blue-400"
+                    : "relative py-2 text-sm font-medium text-slate-300 transition hover:text-blue-400"
+                }
+              >
+                {enlace.nombre}
+              </a>
+            );
+          })}
 
           <SelectorIdioma />
 
@@ -87,7 +213,9 @@ export default function HeaderPublico() {
           aria-expanded={menuAbierto}
           aria-controls="menu-movil"
           onClick={() =>
-            setMenuAbierto((estadoActual) => !estadoActual)
+            setMenuAbierto(
+              (estadoActual) => !estadoActual
+            )
           }
           className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-700 text-slate-200 transition hover:border-blue-500 hover:text-blue-400 md:hidden"
         >
@@ -129,16 +257,30 @@ export default function HeaderPublico() {
           className="border-t border-slate-800 bg-slate-950 px-6 py-5 md:hidden"
         >
           <div className="mx-auto flex w-full max-w-6xl flex-col gap-2">
-            {enlacesNavegacion.map((enlace) => (
-              <a
-                key={enlace.href}
-                href={enlace.href}
-                onClick={cerrarMenu}
-                className="rounded-lg px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-slate-900 hover:text-blue-400"
-              >
-                {enlace.nombre}
-              </a>
-            ))}
+            {enlacesNavegacion.map((enlace) => {
+              const activo =
+                seccionActiva === enlace.id;
+
+              return (
+                <a
+                  key={enlace.id}
+                  href={`#${enlace.id}`}
+                  onClick={() =>
+                    manejarNavegacion(enlace.id)
+                  }
+                  aria-current={
+                    activo ? "location" : undefined
+                  }
+                  className={
+                    activo
+                      ? "rounded-lg bg-blue-500/15 px-4 py-3 text-sm font-semibold text-blue-300 ring-1 ring-inset ring-blue-500/40"
+                      : "rounded-lg px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-slate-900 hover:text-blue-400"
+                  }
+                >
+                  {enlace.nombre}
+                </a>
+              );
+            })}
 
             <div className="px-4 py-2">
               <SelectorIdioma />

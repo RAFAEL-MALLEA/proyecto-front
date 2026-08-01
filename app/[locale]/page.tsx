@@ -6,7 +6,6 @@ import HeaderPublico from "@/components/public/HeaderPublico";
 import Hero from "@/components/public/Hero";
 import ProyectosSection from "@/components/public/ProyectosSection";
 import ReproductorMusica from "@/components/public/ReproductorMusica";
-import ServiciosSection from "@/components/public/ServiciosSection";
 import TecnologiasSection from "@/components/public/TecnologiasSection";
 
 export default function HomePage() {
@@ -14,17 +13,16 @@ export default function HomePage() {
     <>
       <HeaderPublico />
 
-      <main>
+      <main className="h-screen snap-y snap-proximity overflow-y-auto overscroll-y-contain scroll-smooth [&>section]:flex [&>section]:min-h-screen [&>section]:snap-start [&>section]:scroll-mt-20 [&>section]:items-center">
         <Hero />
-        <ServiciosSection />
         <ProyectosSection />
         <ExperienciaTemporalSection />
         <TecnologiasSection />
         <CertificacionesSection />
         <ContactoSection />
+        <FooterPublico />
       </main>
 
-      <FooterPublico />
       <ReproductorMusica />
     </>
   );

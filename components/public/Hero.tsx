@@ -53,10 +53,10 @@ export default function Hero() {
 
           <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
             <a
-              href="#servicios"
+              href="#proyectos"
               className="w-full rounded-lg bg-blue-600 px-6 py-3 text-center font-semibold text-white transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-950 sm:w-auto"
             >
-              {t("verServicios")}
+              {t("verProyectos")}
             </a>
 
             <a
