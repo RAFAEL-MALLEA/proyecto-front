@@ -1,8 +1,17 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import type { MouseEvent } from "react";
 
-export default function Hero() {
+import type { SeccionPublicaId } from "@/components/public/HeaderPublico";
+
+interface HeroProps {
+  onNavegar: (seccion: SeccionPublicaId) => void;
+}
+
+export default function Hero({
+  onNavegar,
+}: HeroProps) {
   const t = useTranslations("Hero");
 
   const tecnologias = [
@@ -15,10 +24,18 @@ export default function Hero() {
     "PostgreSQL",
   ];
 
+  function manejarNavegacion(
+    event: MouseEvent<HTMLAnchorElement>,
+    seccion: SeccionPublicaId
+  ) {
+    event.preventDefault();
+    onNavegar(seccion);
+  }
+
   return (
     <section
       id="inicio"
-      className="relative flex min-h-screen scroll-mt-20 items-center overflow-hidden bg-slate-950 px-6 py-28 text-white"
+      className="relative flex min-h-screen items-center overflow-hidden bg-slate-950 px-6 py-28 text-white"
     >
       <div
         aria-hidden="true"
@@ -37,7 +54,7 @@ export default function Hero() {
           </p>
 
           <h1 className="mt-4 text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
-            {t("saludo")}{" "}
+            {t("saludo")} {" "}
             <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
               Rafael Mallea Ramírez
             </span>
@@ -54,6 +71,12 @@ export default function Hero() {
           <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
             <a
               href="#proyectos"
+              onClick={(event: MouseEvent<HTMLAnchorElement>) =>
+                manejarNavegacion(
+                  event,
+                  "proyectos"
+                )
+              }
               className="w-full rounded-lg bg-blue-600 px-6 py-3 text-center font-semibold text-white transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-950 sm:w-auto"
             >
               {t("verProyectos")}
@@ -61,6 +84,12 @@ export default function Hero() {
 
             <a
               href="#certificaciones"
+              onClick={(event: MouseEvent<HTMLAnchorElement>) =>
+                manejarNavegacion(
+                  event,
+                  "certificaciones"
+                )
+              }
               className="w-full rounded-lg border border-slate-600 px-6 py-3 text-center font-semibold text-slate-200 transition hover:border-blue-400 hover:bg-blue-500/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-950 sm:w-auto"
             >
               {t("verCertificaciones")}

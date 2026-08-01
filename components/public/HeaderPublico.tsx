@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import type { MouseEvent } from "react";
+import { useState } from "react";
 
 import SelectorIdioma from "@/components/public/SelectorIdioma";
 
-const idsSecciones = [
+export const idsSeccionesPublicas = [
   "inicio",
   "proyectos",
   "experiencia",
@@ -15,17 +16,28 @@ const idsSecciones = [
   "contacto",
 ] as const;
 
-type SeccionId = (typeof idsSecciones)[number];
+export type SeccionPublicaId =
+  (typeof idsSeccionesPublicas)[number];
 
-function esSeccionId(valor: string): valor is SeccionId {
-  return idsSecciones.includes(valor as SeccionId);
+export function esSeccionPublicaId(
+  valor: string
+): valor is SeccionPublicaId {
+  return idsSeccionesPublicas.includes(
+    valor as SeccionPublicaId
+  );
 }
 
-export default function HeaderPublico() {
-  const [menuAbierto, setMenuAbierto] = useState(false);
-  const [seccionActiva, setSeccionActiva] =
-    useState<SeccionId>("inicio");
+interface HeaderPublicoProps {
+  seccionActiva: SeccionPublicaId;
+  onNavegar: (seccion: SeccionPublicaId) => void;
+}
 
+export default function HeaderPublico({
+  seccionActiva,
+  onNavegar,
+}: HeaderPublicoProps) {
+  const [menuAbierto, setMenuAbierto] =
+    useState(false);
   const t = useTranslations("Header");
 
   const enlacesNavegacion = [
@@ -55,100 +67,16 @@ export default function HeaderPublico() {
     },
   ];
 
-  useEffect(() => {
-    const visibilidadSecciones = new Map<
-      SeccionId,
-      number
-    >();
-
-    function actualizarDesdeHash() {
-      const idHash = window.location.hash.replace(
-        "#",
-        ""
-      );
-
-      if (esSeccionId(idHash)) {
-        setSeccionActiva(idHash);
-      }
-    }
-
-    actualizarDesdeHash();
-
-    const elementos = idsSecciones
-      .map((id) => document.getElementById(id))
-      .filter(
-        (elemento): elemento is HTMLElement =>
-          elemento !== null
-      );
-
-    const observer = new IntersectionObserver(
-      (entradas) => {
-        entradas.forEach((entrada) => {
-          const id = entrada.target.id;
-
-          if (!esSeccionId(id)) {
-            return;
-          }
-
-          visibilidadSecciones.set(
-            id,
-            entrada.isIntersecting
-              ? entrada.intersectionRatio
-              : 0
-          );
-        });
-
-        const [mejorSeccion] = idsSecciones
-          .map((id) => ({
-            id,
-            proporcionVisible:
-              visibilidadSecciones.get(id) ?? 0,
-          }))
-          .sort(
-            (seccionA, seccionB) =>
-              seccionB.proporcionVisible -
-              seccionA.proporcionVisible
-          );
-
-        if (
-          mejorSeccion &&
-          mejorSeccion.proporcionVisible >= 0.12
-        ) {
-          setSeccionActiva(mejorSeccion.id);
-        }
-      },
-      {
-        root: null,
-        rootMargin: "-80px 0px 0px 0px",
-        threshold: [0, 0.12, 0.25, 0.4, 0.6, 0.8],
-      }
-    );
-
-    elementos.forEach((elemento) => {
-      observer.observe(elemento);
-    });
-
-    window.addEventListener(
-      "hashchange",
-      actualizarDesdeHash
-    );
-
-    return () => {
-      observer.disconnect();
-
-      window.removeEventListener(
-        "hashchange",
-        actualizarDesdeHash
-      );
-    };
-  }, []);
-
   function cerrarMenu() {
     setMenuAbierto(false);
   }
 
-  function manejarNavegacion(id: SeccionId) {
-    setSeccionActiva(id);
+  function manejarNavegacion(
+    event: MouseEvent<HTMLAnchorElement>,
+    seccion: SeccionPublicaId
+  ) {
+    event.preventDefault();
+    onNavegar(seccion);
     cerrarMenu();
   }
 
@@ -157,7 +85,9 @@ export default function HeaderPublico() {
       <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-6">
         <a
           href="#inicio"
-          onClick={() => manejarNavegacion("inicio")}
+          onClick={(event: MouseEvent<HTMLAnchorElement>) =>
+            manejarNavegacion(event, "inicio")
+          }
           className="text-xl font-bold tracking-tight"
         >
           Rafael
@@ -176,8 +106,11 @@ export default function HeaderPublico() {
               <a
                 key={enlace.id}
                 href={`#${enlace.id}`}
-                onClick={() =>
-                  manejarNavegacion(enlace.id)
+                onClick={(event: MouseEvent<HTMLAnchorElement>) =>
+                  manejarNavegacion(
+                    event,
+                    enlace.id
+                  )
                 }
                 aria-current={
                   activo ? "location" : undefined
@@ -265,8 +198,11 @@ export default function HeaderPublico() {
                 <a
                   key={enlace.id}
                   href={`#${enlace.id}`}
-                  onClick={() =>
-                    manejarNavegacion(enlace.id)
+                  onClick={(event: MouseEvent<HTMLAnchorElement>) =>
+                    manejarNavegacion(
+                      event,
+                      enlace.id
+                    )
                   }
                   aria-current={
                     activo ? "location" : undefined

@@ -1,37 +1,54 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import type { MouseEvent } from "react";
 
-export default function FooterPublico() {
+import type { SeccionPublicaId } from "@/components/public/HeaderPublico";
+
+interface FooterPublicoProps {
+  onNavegar: (seccion: SeccionPublicaId) => void;
+}
+
+export default function FooterPublico({
+  onNavegar,
+}: FooterPublicoProps) {
   const t = useTranslations("Footer");
   const anioActual = new Date().getFullYear();
 
   const enlacesNavegacion = [
     {
+      id: "inicio" as const,
       nombre: t("inicio"),
-      href: "#inicio",
     },
     {
+      id: "proyectos" as const,
       nombre: t("proyectos"),
-      href: "#proyectos",
     },
     {
+      id: "experiencia" as const,
       nombre: t("experiencia"),
-      href: "#experiencia",
     },
     {
+      id: "tecnologias" as const,
       nombre: t("tecnologias"),
-      href: "#tecnologias",
     },
     {
+      id: "certificaciones" as const,
       nombre: t("certificaciones"),
-      href: "#certificaciones",
     },
     {
+      id: "contacto" as const,
       nombre: t("contacto"),
-      href: "#contacto",
     },
   ];
+
+  function manejarNavegacion(
+    event: MouseEvent<HTMLAnchorElement>,
+    seccion: SeccionPublicaId
+  ) {
+    event.preventDefault();
+    onNavegar(seccion);
+  }
 
   return (
     <footer className="border-t border-slate-800 bg-slate-950 px-6 py-12 text-white">
@@ -40,6 +57,9 @@ export default function FooterPublico() {
           <div className="w-full md:flex-1">
             <a
               href="#inicio"
+              onClick={(event: MouseEvent<HTMLAnchorElement>) =>
+                manejarNavegacion(event, "inicio")
+              }
               className="text-xl font-bold tracking-tight"
             >
               Rafael
@@ -62,8 +82,14 @@ export default function FooterPublico() {
             >
               {enlacesNavegacion.map((enlace) => (
                 <a
-                  key={enlace.href}
-                  href={enlace.href}
+                  key={enlace.id}
+                  href={`#${enlace.id}`}
+                  onClick={(event: MouseEvent<HTMLAnchorElement>) =>
+                    manejarNavegacion(
+                      event,
+                      enlace.id
+                    )
+                  }
                   className="text-sm text-slate-400 transition hover:text-blue-400"
                 >
                   {enlace.nombre}
