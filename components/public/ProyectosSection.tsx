@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 
 import EstadoCarga from "@/components/public/EstadoCarga";
 import MensajeError from "@/components/public/MensajeError";
+import TecnologiaBadge from "@/components/public/TecnologiaBadge";
 import { obtenerProyectosPublicados } from "@/services/proyectos";
 import type { Proyecto } from "@/types/Proyecto";
 
@@ -664,12 +665,11 @@ export default function ProyectosSection() {
                                   <div className="mt-3 flex max-h-16 flex-wrap gap-2 overflow-hidden">
                                     {tecnologias.map(
                                       (tecnologia) => (
-                                        <span
+                                        <TecnologiaBadge
                                           key={tecnologia}
-                                          className="rounded-full border border-slate-700 bg-slate-950/70 px-3 py-1 text-xs font-semibold text-slate-300"
-                                        >
-                                          {tecnologia}
-                                        </span>
+                                          nombre={tecnologia}
+                                          compacta
+                                        />
                                       )
                                     )}
                                   </div>
@@ -903,12 +903,10 @@ export default function ProyectosSection() {
                     {separarTecnologias(
                       proyectoInformacion.tecnologias
                     ).map((tecnologia) => (
-                      <span
+                      <TecnologiaBadge
                         key={tecnologia}
-                        className="rounded-full border border-slate-700 bg-slate-950/70 px-3 py-1.5 text-xs font-semibold text-slate-300"
-                      >
-                        {tecnologia}
-                      </span>
+                        nombre={tecnologia}
+                      />
                     ))}
                   </div>
                 </div>
