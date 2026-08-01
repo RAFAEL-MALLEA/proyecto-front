@@ -3,6 +3,7 @@
     "inicio": "Inicio",
     "servicios": "Servicios",
     "proyectos": "Proyectos",
+    "experiencia": "Experiencia",
     "certificaciones": "Certificaciones",
     "contacto": "Contacto",
     "administrar": "Administrar",
@@ -121,5 +122,10 @@
     "nivelNoEspecificado": "No especificado",
     "sinDescripcion": "Tecnología utilizada en mis proyectos y procesos de desarrollo.",
     "iconoAlternativo": "Icono de {nombre}"
+  },
+  "ExperienciaTemporal": {
+    "etiqueta": "Experiencia",
+    "titulo": "Mi trayectoria profesional estará disponible en esta sección",
+    "descripcion": "Esta sección temporal permite probar desde ahora la navegación hacia #experiencia. El módulo completo se construirá paso a paso y se conectará posteriormente con FastAPI y MySQL."
   }
 }

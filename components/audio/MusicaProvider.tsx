@@ -11,6 +11,12 @@ import {
 } from "react";
 
 
+const canciones = [
+  "/audio/musica-fondo.mp3",
+  "/audio/musica-fondo-2.mp3",
+];
+
+
 interface MusicaContexto {
   reproduciendo: boolean;
   silenciado: boolean;
@@ -33,18 +39,27 @@ export function MusicaProvider({
 }: MusicaProviderProps) {
   const audioRef = useRef<HTMLAudioElement>(null);
 
+  /*
+   * Indica que el cambio de canción fue automático
+   * porque terminó la canción anterior.
+   */
+  const reproducirSiguienteRef = useRef(false);
+
   const [reproduciendo, setReproduciendo] =
     useState(false);
 
   const [silenciado, setSilenciado] =
     useState(false);
 
+  const [indiceCancion, setIndiceCancion] =
+    useState(0);
+
 
   const alternarReproduccion = useCallback(
     async () => {
       const audio = audioRef.current;
 
-      if (!audio) {
+      if (!audio || canciones.length === 0) {
         return;
       }
 
@@ -77,6 +92,52 @@ export function MusicaProvider({
   }, []);
 
 
+  const avanzarCancion = useCallback(() => {
+    if (canciones.length === 0) {
+      return;
+    }
+
+    reproducirSiguienteRef.current = true;
+
+    setIndiceCancion((indiceActual) => {
+      return (
+        (indiceActual + 1) %
+        canciones.length
+      );
+    });
+  }, []);
+
+
+  const reproducirCancionCargada =
+    useCallback(
+      async (
+        audio: HTMLAudioElement
+      ) => {
+        if (!reproducirSiguienteRef.current) {
+          return;
+        }
+
+        /*
+         * Se cambia antes de play() para impedir
+         * llamadas repetidas del evento canplay.
+         */
+        reproducirSiguienteRef.current = false;
+
+        try {
+          await audio.play();
+        } catch (error) {
+          setReproduciendo(false);
+
+          console.error(
+            "No fue posible reproducir la siguiente canción:",
+            error
+          );
+        }
+      },
+      []
+    );
+
+
   const valorContexto = useMemo(
     () => ({
       reproduciendo,
@@ -94,24 +155,49 @@ export function MusicaProvider({
 
 
   return (
-    <ContextoMusica.Provider value={valorContexto}>
-      <audio
-        ref={audioRef}
-        src="/audio/musica-fondo.mp3"
-        loop
-        playsInline
-        preload="metadata"
-        onLoadedMetadata={(event) => {
-          event.currentTarget.volume = 0.25;
-          setSilenciado(event.currentTarget.muted);
-        }}
-        onPlay={() => setReproduciendo(true)}
-        onPause={() => setReproduciendo(false)}
-        onEnded={() => setReproduciendo(false)}
-        onVolumeChange={(event) =>
-          setSilenciado(event.currentTarget.muted)
-        }
-      />
+    <ContextoMusica.Provider
+      value={valorContexto}
+    >
+      {canciones.length > 0 && (
+        <audio
+          ref={audioRef}
+          src={canciones[indiceCancion]}
+          playsInline
+          preload="metadata"
+          onLoadedMetadata={(event) => {
+            event.currentTarget.volume = 0.25;
+          }}
+          onCanPlay={(event) => {
+            void reproducirCancionCargada(
+              event.currentTarget
+            );
+          }}
+          onPlay={() => {
+            setReproduciendo(true);
+          }}
+          onPause={() => {
+            setReproduciendo(false);
+          }}
+          onEnded={avanzarCancion}
+          onVolumeChange={(event) => {
+            setSilenciado(
+              event.currentTarget.muted
+            );
+          }}
+          onError={(event) => {
+            console.error(
+              "No fue posible cargar la canción:",
+              canciones[indiceCancion],
+              event.currentTarget.error
+            );
+
+            reproducirSiguienteRef.current =
+              false;
+
+            setReproduciendo(false);
+          }}
+        />
+      )}
 
       {children}
     </ContextoMusica.Provider>
@@ -120,7 +206,9 @@ export function MusicaProvider({
 
 
 export function useMusica(): MusicaContexto {
-  const contexto = useContext(ContextoMusica);
+  const contexto = useContext(
+    ContextoMusica
+  );
 
   if (!contexto) {
     throw new Error(

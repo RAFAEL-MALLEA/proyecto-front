@@ -3,6 +3,7 @@
     "inicio": "Home",
     "servicios": "Services",
     "proyectos": "Projects",
+    "experiencia": "Experience",
     "certificaciones": "Certifications",
     "contacto": "Contact",
     "administrar": "Admin",
@@ -121,5 +122,10 @@
     "nivelNoEspecificado": "Not specified",
     "sinDescripcion": "Technology used in my projects and development processes.",
     "iconoAlternativo": "{nombre} icon"
+  },
+  "ExperienciaTemporal": {
+    "etiqueta": "Experience",
+    "titulo": "My professional journey will be available in this section",
+    "descripcion": "This temporary section lets us test navigation to #experiencia now. The complete module will be built step by step and later connected to FastAPI and MySQL."
   }
 }
