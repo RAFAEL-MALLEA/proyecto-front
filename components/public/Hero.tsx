@@ -121,8 +121,8 @@ export default function Hero({ onNavegar }: HeroProps) {
             </a>
 
             <a
-              href="/documentos/rafael-mallea-cv.pdf"
-              download="rafael-mallea-cv.pdf"
+              href="/documentos/RAFAEL_MALLEA_CV.pdf"
+              download="RAFAEL_MALLEA_CV.pdf"
               className="inline-flex w-full items-center justify-center gap-3 rounded-sm border border-slate-600 bg-slate-950/40 px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-slate-200 transition hover:border-cyan-300 hover:bg-cyan-400/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-300 sm:w-auto"
             >
               {t("descargarCv")}
