@@ -2,6 +2,8 @@
 
 import { useTranslations } from "next-intl";
 
+import ServiciosSection from "@/components/public/ServiciosSection";
+
 const correoContacto = "rafaelmallea2000@gmail.com";
 const numeroWhatsapp = "56968177179";
 
@@ -91,60 +93,64 @@ export default function ContactoSection() {
       id="contacto"
       className="scroll-mt-20 bg-slate-950 px-6 py-24 text-white"
     >
-      <div className="mx-auto max-w-6xl">
-        <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-blue-400">
-            {t("etiqueta")}
-          </p>
+      <div className="w-full">
+        <ServiciosSection />
 
-          <h2 className="mt-4 text-3xl font-bold sm:text-4xl">
-            {t("titulo")}
-          </h2>
+        <div className="mx-auto mt-24 max-w-6xl">
+          <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
+            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-blue-400">
+              {t("etiqueta")}
+            </p>
 
-          <p className="mt-5 leading-8 text-slate-400">
-            {t("descripcion")}
-          </p>
-        </div>
+            <h2 className="mt-4 text-3xl font-bold sm:text-4xl">
+              {t("titulo")}
+            </h2>
 
-        <div className="mt-14 flex flex-wrap gap-6">
-          {opcionesContacto.map((opcion) => (
-            <article
-              key={opcion.titulo}
-              className="flex w-full min-w-0 flex-col rounded-2xl border border-slate-800 bg-slate-900 p-7 transition duration-300 hover:-translate-y-1 hover:border-blue-500 hover:shadow-xl hover:shadow-blue-950/30 md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]"
-            >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/10 text-blue-400">
-                <IconoContacto tipo={opcion.tipo} />
-              </div>
+            <p className="mt-5 leading-8 text-slate-400">
+              {t("descripcion")}
+            </p>
+          </div>
 
-              <h3 className="mt-6 text-xl font-bold">
-                {opcion.titulo}
-              </h3>
-
-              <p className="mt-4 flex-grow leading-7 text-slate-400">
-                {opcion.descripcion}
-              </p>
-
-              <a
-                href={opcion.enlace}
-                target={
-                  opcion.tipo === "correo"
-                    ? undefined
-                    : "_blank"
-                }
-                rel={
-                  opcion.tipo === "correo"
-                    ? undefined
-                    : "noreferrer"
-                }
-                className="mt-7 inline-flex break-all font-semibold text-blue-400 transition hover:text-blue-300"
+          <div className="mt-14 flex flex-wrap gap-6">
+            {opcionesContacto.map((opcion) => (
+              <article
+                key={opcion.titulo}
+                className="flex w-full min-w-0 flex-col rounded-2xl border border-slate-800 bg-slate-900 p-7 transition duration-300 hover:-translate-y-1 hover:border-blue-500 hover:shadow-xl hover:shadow-blue-950/30 md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]"
               >
-                <span className="flex items-center gap-2">
-                  {opcion.textoEnlace}
-                  <span aria-hidden="true">→</span>
-                </span>
-              </a>
-            </article>
-          ))}
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/10 text-blue-400">
+                  <IconoContacto tipo={opcion.tipo} />
+                </div>
+
+                <h3 className="mt-6 text-xl font-bold">
+                  {opcion.titulo}
+                </h3>
+
+                <p className="mt-4 flex-grow leading-7 text-slate-400">
+                  {opcion.descripcion}
+                </p>
+
+                <a
+                  href={opcion.enlace}
+                  target={
+                    opcion.tipo === "correo"
+                      ? undefined
+                      : "_blank"
+                  }
+                  rel={
+                    opcion.tipo === "correo"
+                      ? undefined
+                      : "noreferrer"
+                  }
+                  className="mt-7 inline-flex break-all font-semibold text-blue-400 transition hover:text-blue-300"
+                >
+                  <span className="flex items-center gap-2">
+                    {opcion.textoEnlace}
+                    <span aria-hidden="true">→</span>
+                  </span>
+                </a>
+              </article>
+            ))}
+          </div>
         </div>
       </div>
     </section>
