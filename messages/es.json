@@ -144,9 +144,15 @@
     "sinDescripcion": "Tecnología utilizada en mis proyectos y procesos de desarrollo.",
     "iconoAlternativo": "Icono de {nombre}"
   },
-  "ExperienciaTemporal": {
+  "Experiencia": {
     "etiqueta": "Experiencia",
-    "titulo": "Mi trayectoria profesional estará disponible en esta sección",
-    "descripcion": "Esta sección temporal permite probar desde ahora la navegación hacia #experiencia. El módulo completo se construirá paso a paso y se conectará posteriormente con FastAPI y MySQL."
+    "titulo": "Mi trayectoria profesional",
+    "descripcion": "Un resumen de los roles y proyectos donde he aplicado desarrollo de software, soporte tecnológico y trabajo en equipo.",
+    "cargando": "Cargando experiencia...",
+    "errorTitulo": "No fue posible cargar la experiencia",
+    "errorDesconocido": "Ocurrió un error inesperado.",
+    "sinExperiencias": "Actualmente no existen experiencias publicadas.",
+    "trabajoActual": "Actualidad",
+    "actualidad": "Actualidad"
   }
 }

@@ -8,7 +8,7 @@ import {
 
 import CertificacionesSection from "@/components/public/CertificacionesSection";
 import ContactoSection from "@/components/public/ContactoSection";
-import ExperienciaTemporalSection from "@/components/public/ExperienciaTemporalSection";
+import ExperienciaSection from "@/components/public/ExperienciaSection";
 import FooterPublico from "@/components/public/FooterPublico";
 import HeaderPublico, {
   esSeccionPublicaId,
@@ -344,7 +344,7 @@ export default function PortafolioEscenas() {
           nombre="experiencia"
           reducirMovimiento={reducirMovimiento}
         >
-          <ExperienciaTemporalSection />
+          <ExperienciaSection />
         </Escena>
 
         <Escena

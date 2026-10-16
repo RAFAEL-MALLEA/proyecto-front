@@ -144,9 +144,15 @@
     "sinDescripcion": "Technology used in my projects and development processes.",
     "iconoAlternativo": "{nombre} icon"
   },
-  "ExperienciaTemporal": {
+  "Experiencia": {
     "etiqueta": "Experience",
-    "titulo": "My professional journey will be available in this section",
-    "descripcion": "This temporary section lets us test navigation to #experiencia now. The complete module will be built step by step and later connected to FastAPI and MySQL."
+    "titulo": "My professional journey",
+    "descripcion": "A summary of the roles and projects where I've applied software development, IT support and teamwork.",
+    "cargando": "Loading experience...",
+    "errorTitulo": "Experience could not be loaded",
+    "errorDesconocido": "An unexpected error occurred.",
+    "sinExperiencias": "There are currently no published experiences.",
+    "trabajoActual": "Current",
+    "actualidad": "Present"
   }
 }
