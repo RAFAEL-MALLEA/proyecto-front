@@ -18,8 +18,8 @@ const enlaces = [
     href: "/admin/servicios",
   },
   {
-    nombre: "Experiencia",
-    href: "/admin/experiencia",
+    nombre: "Experiencias",
+    href: "/admin/experiencias",
   },
   {
     nombre: "Proyectos",

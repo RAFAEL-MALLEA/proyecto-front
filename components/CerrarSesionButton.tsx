@@ -9,7 +9,7 @@ export default function CerrarSesionButton() {
     sessionStorage.removeItem("access_token");
     sessionStorage.removeItem("token_type");
 
-    router.replace("/login");
+    router.replace("/");
   }
 
   return (
