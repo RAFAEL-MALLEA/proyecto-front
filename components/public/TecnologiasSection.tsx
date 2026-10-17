@@ -6,23 +6,16 @@ import {
 } from "react";
 import { useTranslations } from "next-intl";
 
+import CompetenciasBlandasSection from "@/components/public/CompetenciasBlandasSection";
 import EstadoCarga from "@/components/public/EstadoCarga";
 import MensajeError from "@/components/public/MensajeError";
 import { obtenerTecnologiasPublicadas } from "@/services/tecnologias";
 import type { Tecnologia } from "@/types/Tecnologia";
-import CompetenciasBlandasSection from "@/components/public/CompetenciasBlandasSection";
+
 
 interface GrupoTecnologias {
   categoria: string;
   tecnologias: Tecnologia[];
-}
-
-
-interface IconoTecnologiaProps {
-  icono: string | null;
-  nombre: string;
-  color: string | null;
-  textoAlternativo: string;
 }
 
 
@@ -40,45 +33,38 @@ function obtenerColorSeguro(
 }
 
 
-function IconoTecnologia({
+function IniciacionIconoPildora({
   icono,
   nombre,
   color,
   textoAlternativo,
-}: IconoTecnologiaProps) {
+}: {
+  icono: string | null;
+  nombre: string;
+  color: string | null;
+  textoAlternativo: string;
+}) {
   const [iconoConError, setIconoConError] =
     useState(false);
 
   const colorSeguro = obtenerColorSeguro(color);
 
-  const estiloContenedor = colorSeguro
-    ? {
-      borderColor: colorSeguro,
-      backgroundColor: `${colorSeguro}14`,
-    }
-    : undefined;
-
   if (!icono || iconoConError) {
     return (
-      <div
-        aria-label={textoAlternativo}
-        className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-slate-300 bg-white text-lg font-bold text-slate-700"
-        style={estiloContenedor}
+      <span
+        aria-hidden="true"
+        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[10px] font-bold text-slate-900"
+        style={{
+          backgroundColor: colorSeguro ?? "#e2e8f0",
+        }}
       >
-        {nombre
-          .trim()
-          .slice(0, 2)
-          .toUpperCase()}
-      </div>
+        {nombre.trim().slice(0, 2).toUpperCase()}
+      </span>
     );
   }
 
   return (
-    <div
-      className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-slate-300 bg-white p-2.5"
-      style={estiloContenedor}
-    >
-      {/* La ruta puede ser local o una URL administrada desde el panel. */}
+    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-white p-0.5">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={icono}
@@ -86,7 +72,7 @@ function IconoTecnologia({
         onError={() => setIconoConError(true)}
         className="h-full w-full object-contain"
       />
-    </div>
+    </span>
   );
 }
 
@@ -188,23 +174,6 @@ export default function TecnologiasSection() {
   );
 
 
-  function traducirNivel(nivel: number): string {
-    if (nivel === 1) {
-      return t("nivelBasico");
-    }
-
-    if (nivel === 2) {
-      return t("nivelIntermedio");
-    }
-
-    if (nivel === 3) {
-      return t("nivelAvanzado");
-    }
-
-    return t("nivelNoEspecificado");
-  }
-
-
   return (
     <section
       id="tecnologias"
@@ -216,7 +185,7 @@ export default function TecnologiasSection() {
             {t("etiqueta")}
           </p>
 
-          <h2 className="mt-4 text-3xl font-bold sm:text-4xl">
+          <h2 className="mt-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-3xl font-bold text-transparent sm:text-4xl">
             {t("titulo")}
           </h2>
 
@@ -254,103 +223,46 @@ export default function TecnologiasSection() {
           {!cargando &&
             !error &&
             gruposTecnologias.length > 0 && (
-              <div className="flex flex-col gap-14">
-                {gruposTecnologias.map(
-                  (grupo, indiceGrupo) => {
-                    const categoriaId =
-                      `categoria-tecnologias-${indiceGrupo}`;
+              <div className="flex flex-wrap gap-6">
+                {gruposTecnologias.map((grupo) => (
+                  <div
+                    key={grupo.categoria}
+                    className="flex w-full min-w-0 flex-col rounded-2xl border border-slate-800 bg-slate-900/60 p-6 md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]"
+                  >
+                    <h3 className="text-lg font-bold text-white">
+                      {grupo.categoria}
+                    </h3>
 
-                    return (
-                      <section
-                        key={grupo.categoria}
-                        aria-labelledby={categoriaId}
-                      >
-                        <div className="flex flex-wrap items-center gap-3">
-                          <h3
-                            id={categoriaId}
-                            className="text-2xl font-bold text-white"
+                    <div className="mt-5 flex flex-wrap gap-3">
+                      {grupo.tecnologias.map(
+                        (tecnologia) => (
+                          <span
+                            key={tecnologia.id}
+                            className="flex items-center gap-2 rounded-full border border-slate-700 bg-slate-950 px-3 py-2 text-sm font-medium text-slate-200"
                           >
-                            {grupo.categoria}
-                          </h3>
+                            <IniciacionIconoPildora
+                              icono={tecnologia.icono}
+                              nombre={tecnologia.nombre}
+                              color={tecnologia.color}
+                              textoAlternativo={t(
+                                "iconoAlternativo",
+                                {
+                                  nombre:
+                                    tecnologia.nombre,
+                                }
+                              )}
+                            />
 
-                          <span className="rounded-full border border-slate-700 bg-slate-900 px-3 py-1 text-xs font-semibold text-slate-300">
-                            {t("cantidad", {
-                              cantidad:
-                                grupo.tecnologias.length,
-                            })}
+                            {tecnologia.nombre}
                           </span>
-                        </div>
-
-
-                        <div className="mt-6 flex flex-wrap gap-6">
-                          {grupo.tecnologias.map(
-                            (tecnologia) => {
-                              const colorSeguro =
-                                obtenerColorSeguro(
-                                  tecnologia.color
-                                );
-
-                              return (
-                                <article
-                                  key={tecnologia.id}
-                                  className="flex w-full min-w-0 flex-col rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-blue-500 hover:shadow-xl hover:shadow-blue-950/30 md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]"
-                                  style={
-                                    colorSeguro
-                                      ? {
-                                        borderTopColor:
-                                          colorSeguro,
-                                        borderTopWidth:
-                                          "3px",
-                                      }
-                                      : undefined
-                                  }
-                                >
-                                  <div className="flex items-start gap-4">
-                                    <IconoTecnologia
-                                      icono={tecnologia.icono}
-                                      nombre={tecnologia.nombre}
-                                      color={tecnologia.color}
-                                      textoAlternativo={t(
-                                        "iconoAlternativo",
-                                        {
-                                          nombre:
-                                            tecnologia.nombre,
-                                        }
-                                      )}
-                                    />
-
-                                    <div className="min-w-0 flex-1">
-                                      <h4 className="break-words text-xl font-bold text-white">
-                                        {tecnologia.nombre}
-                                      </h4>
-
-                                      <p className="mt-2 text-sm font-semibold text-blue-300">
-                                        {t("nivel", {
-                                          nivel:
-                                            traducirNivel(
-                                              tecnologia.nivel
-                                            ),
-                                        })}
-                                      </p>
-                                    </div>
-                                  </div>
-
-
-                                  <p className="mt-5 flex-grow leading-7 text-slate-400">
-                                    {tecnologia.descripcion ??
-                                      t("sinDescripcion")}
-                                  </p>
-                                </article>
-                              );
-                            }
-                          )}
-                        </div>
-                      </section>
-                    );
-                  }
-                )}
+                        )
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
+
           <CompetenciasBlandasSection />
         </div>
       </div>
