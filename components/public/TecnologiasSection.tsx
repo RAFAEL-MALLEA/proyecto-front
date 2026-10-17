@@ -10,7 +10,7 @@ import EstadoCarga from "@/components/public/EstadoCarga";
 import MensajeError from "@/components/public/MensajeError";
 import { obtenerTecnologiasPublicadas } from "@/services/tecnologias";
 import type { Tecnologia } from "@/types/Tecnologia";
-
+import CompetenciasBlandasSection from "@/components/public/CompetenciasBlandasSection";
 
 interface GrupoTecnologias {
   categoria: string;
@@ -53,9 +53,9 @@ function IconoTecnologia({
 
   const estiloContenedor = colorSeguro
     ? {
-        borderColor: colorSeguro,
-        backgroundColor: `${colorSeguro}14`,
-      }
+      borderColor: colorSeguro,
+      backgroundColor: `${colorSeguro}14`,
+    }
     : undefined;
 
   if (!icono || iconoConError) {
@@ -261,96 +261,97 @@ export default function TecnologiasSection() {
                       `categoria-tecnologias-${indiceGrupo}`;
 
                     return (
-                  <section
-                    key={grupo.categoria}
-                    aria-labelledby={categoriaId}
-                  >
-                    <div className="flex flex-wrap items-center gap-3">
-                      <h3
-                        id={categoriaId}
-                        className="text-2xl font-bold text-white"
+                      <section
+                        key={grupo.categoria}
+                        aria-labelledby={categoriaId}
                       >
-                        {grupo.categoria}
-                      </h3>
+                        <div className="flex flex-wrap items-center gap-3">
+                          <h3
+                            id={categoriaId}
+                            className="text-2xl font-bold text-white"
+                          >
+                            {grupo.categoria}
+                          </h3>
 
-                      <span className="rounded-full border border-slate-700 bg-slate-900 px-3 py-1 text-xs font-semibold text-slate-300">
-                        {t("cantidad", {
-                          cantidad:
-                            grupo.tecnologias.length,
-                        })}
-                      </span>
-                    </div>
+                          <span className="rounded-full border border-slate-700 bg-slate-900 px-3 py-1 text-xs font-semibold text-slate-300">
+                            {t("cantidad", {
+                              cantidad:
+                                grupo.tecnologias.length,
+                            })}
+                          </span>
+                        </div>
 
 
-                    <div className="mt-6 flex flex-wrap gap-6">
-                      {grupo.tecnologias.map(
-                        (tecnologia) => {
-                          const colorSeguro =
-                            obtenerColorSeguro(
-                              tecnologia.color
-                            );
+                        <div className="mt-6 flex flex-wrap gap-6">
+                          {grupo.tecnologias.map(
+                            (tecnologia) => {
+                              const colorSeguro =
+                                obtenerColorSeguro(
+                                  tecnologia.color
+                                );
 
-                          return (
-                            <article
-                              key={tecnologia.id}
-                              className="flex w-full min-w-0 flex-col rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-blue-500 hover:shadow-xl hover:shadow-blue-950/30 md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]"
-                              style={
-                                colorSeguro
-                                  ? {
-                                      borderTopColor:
-                                        colorSeguro,
-                                      borderTopWidth:
-                                        "3px",
-                                    }
-                                  : undefined
-                              }
-                            >
-                              <div className="flex items-start gap-4">
-                                <IconoTecnologia
-                                  icono={tecnologia.icono}
-                                  nombre={tecnologia.nombre}
-                                  color={tecnologia.color}
-                                  textoAlternativo={t(
-                                    "iconoAlternativo",
-                                    {
-                                      nombre:
-                                        tecnologia.nombre,
-                                    }
-                                  )}
-                                />
+                              return (
+                                <article
+                                  key={tecnologia.id}
+                                  className="flex w-full min-w-0 flex-col rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-blue-500 hover:shadow-xl hover:shadow-blue-950/30 md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]"
+                                  style={
+                                    colorSeguro
+                                      ? {
+                                        borderTopColor:
+                                          colorSeguro,
+                                        borderTopWidth:
+                                          "3px",
+                                      }
+                                      : undefined
+                                  }
+                                >
+                                  <div className="flex items-start gap-4">
+                                    <IconoTecnologia
+                                      icono={tecnologia.icono}
+                                      nombre={tecnologia.nombre}
+                                      color={tecnologia.color}
+                                      textoAlternativo={t(
+                                        "iconoAlternativo",
+                                        {
+                                          nombre:
+                                            tecnologia.nombre,
+                                        }
+                                      )}
+                                    />
 
-                                <div className="min-w-0 flex-1">
-                                  <h4 className="break-words text-xl font-bold text-white">
-                                    {tecnologia.nombre}
-                                  </h4>
+                                    <div className="min-w-0 flex-1">
+                                      <h4 className="break-words text-xl font-bold text-white">
+                                        {tecnologia.nombre}
+                                      </h4>
 
-                                  <p className="mt-2 text-sm font-semibold text-blue-300">
-                                    {t("nivel", {
-                                      nivel:
-                                        traducirNivel(
-                                          tecnologia.nivel
-                                        ),
-                                    })}
+                                      <p className="mt-2 text-sm font-semibold text-blue-300">
+                                        {t("nivel", {
+                                          nivel:
+                                            traducirNivel(
+                                              tecnologia.nivel
+                                            ),
+                                        })}
+                                      </p>
+                                    </div>
+                                  </div>
+
+
+                                  <p className="mt-5 flex-grow leading-7 text-slate-400">
+                                    {tecnologia.descripcion ??
+                                      t("sinDescripcion")}
                                   </p>
-                                </div>
-                              </div>
-
-
-                              <p className="mt-5 flex-grow leading-7 text-slate-400">
-                                {tecnologia.descripcion ??
-                                  t("sinDescripcion")}
-                              </p>
-                            </article>
-                          );
-                        }
-                      )}
-                    </div>
-                  </section>
+                                </article>
+                              );
+                            }
+                          )}
+                        </div>
+                      </section>
                     );
                   }
                 )}
               </div>
             )}
+          <CompetenciasBlandasSection />
         </div>
       </div>
     </section>

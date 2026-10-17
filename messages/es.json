@@ -154,5 +154,10 @@
     "sinExperiencias": "Actualmente no existen experiencias publicadas.",
     "trabajoActual": "Actualidad",
     "actualidad": "Actualidad"
+  },
+  "CompetenciasBlandas": {
+    "titulo": "Competencias Blandas",
+    "descripcion": "Lo que aporto en cada equipo, más allá del código",
+    "errorDesconocido": "Ocurrió un error inesperado."
   }
 }

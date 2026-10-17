@@ -154,5 +154,10 @@
     "sinExperiencias": "There are currently no published experiences.",
     "trabajoActual": "Current",
     "actualidad": "Present"
+  },
+  "CompetenciasBlandas": {
+    "titulo": "Soft Skills",
+    "descripcion": "What I bring to every team, beyond the code",
+    "errorDesconocido": "An unexpected error occurred."
   }
 }

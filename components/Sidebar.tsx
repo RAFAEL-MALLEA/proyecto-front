@@ -29,6 +29,10 @@ const enlaces = [
     nombre: "Tecnologías",
     href: "/admin/tecnologias",
   },
+  {
+    nombre: "Competencias Blandas",
+    href: "/admin/competencias-blandas",
+  },
 ];
 
 
