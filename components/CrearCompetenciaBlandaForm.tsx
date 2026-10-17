@@ -6,6 +6,7 @@ import {
     useState,
 } from "react";
 
+import SelectorEmojis from "@/components/SelectorEmojis";
 import { crearCompetenciaBlanda } from "@/services/competenciasBlandas";
 import type {
     CompetenciaBlanda,
@@ -73,6 +74,14 @@ export default function CrearCompetenciaBlandaForm({
     }
 
 
+    function manejarIconoSeleccionado(emoji: string) {
+        setFormulario((formularioActual) => ({
+            ...formularioActual,
+            icono: emoji,
+        }));
+    }
+
+
     function manejarPublicado(
         event: ChangeEvent<HTMLInputElement>
     ) {
@@ -110,7 +119,7 @@ export default function CrearCompetenciaBlandaForm({
 
             if (!icono) {
                 throw new Error(
-                    "Debes ingresar un emoji para el ícono."
+                    "Debes elegir un ícono."
                 );
             }
 
@@ -224,7 +233,7 @@ export default function CrearCompetenciaBlandaForm({
                             htmlFor="icono"
                             className="font-semibold text-slate-800"
                         >
-                            Ícono (emoji)
+                            Ícono seleccionado
                         </label>
 
                         <input
@@ -235,12 +244,20 @@ export default function CrearCompetenciaBlandaForm({
                             onChange={manejarCampoTexto}
                             maxLength={10}
                             required
+                            readOnly
                             disabled={enviando}
-                            placeholder="🤝"
-                            className="rounded-lg border border-slate-300 px-4 py-3 text-2xl outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:bg-slate-100"
+                            placeholder="Elige abajo"
+                            className="rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-2xl outline-none disabled:bg-slate-100"
                         />
                     </div>
                 </div>
+
+
+                <SelectorEmojis
+                    valorSeleccionado={formulario.icono}
+                    onSeleccionar={manejarIconoSeleccionado}
+                    disabled={enviando}
+                />
 
 
                 <div className="flex flex-col gap-2">

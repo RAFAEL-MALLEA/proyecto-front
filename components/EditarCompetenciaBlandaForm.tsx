@@ -6,6 +6,7 @@ import {
     useState,
 } from "react";
 
+import SelectorEmojis from "@/components/SelectorEmojis";
 import { actualizarCompetenciaBlanda } from "@/services/competenciasBlandas";
 import type {
     CompetenciaBlanda,
@@ -77,6 +78,14 @@ export default function EditarCompetenciaBlandaForm({
         setFormulario((formularioActual) => ({
             ...formularioActual,
             [name]: value,
+        }));
+    }
+
+
+    function manejarIconoSeleccionado(emoji: string) {
+        setFormulario((formularioActual) => ({
+            ...formularioActual,
+            icono: emoji,
         }));
     }
 
@@ -228,7 +237,7 @@ export default function EditarCompetenciaBlandaForm({
                             htmlFor="icono-editar"
                             className="font-semibold text-slate-800"
                         >
-                            Ícono (emoji)
+                            Ícono seleccionado
                         </label>
 
                         <input
@@ -239,11 +248,19 @@ export default function EditarCompetenciaBlandaForm({
                             onChange={manejarCampoTexto}
                             maxLength={10}
                             required
+                            readOnly
                             disabled={enviando}
-                            className="rounded-lg border border-slate-300 px-4 py-3 text-2xl outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:bg-slate-100"
+                            className="rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-2xl outline-none disabled:bg-slate-100"
                         />
                     </div>
                 </div>
+
+
+                <SelectorEmojis
+                    valorSeleccionado={formulario.icono}
+                    onSeleccionar={manejarIconoSeleccionado}
+                    disabled={enviando}
+                />
 
 
                 <div className="flex flex-col gap-2">
